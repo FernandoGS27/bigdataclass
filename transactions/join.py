@@ -67,8 +67,8 @@ joint_df.show()
 
 
 # Load exchange rates
-exchange_rates_schema = SStructType([StructField("currency", StringType()),
-                          StructField("rate", SFloatType())])
+exchange_rates_schema = StructType([StructField("currency", StringType()),
+                          StructField("rate", FloatType())])
                           
 exchange_rates_df = spark.read.csv('exchange_rates.csv',
                                     schema=exchange_rate_schema,
