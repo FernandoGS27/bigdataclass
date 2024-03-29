@@ -64,3 +64,16 @@ names_df.show()
 joint_df = stats_df.join(names_df, stats_df.customer_id == names_df.id)
 joint_df.printSchema()
 joint_df.show()
+
+
+# Load exchange rates
+exchange_rates_schema = SStructType([StructField("currency", StringType()),
+                          StructField("rate", SFloatType())])
+                          
+exchange_rates_df = spark.read.csv('exchange_rates.csv',
+                                    schema=exchange_rate_schema,
+                                    header=True)
+exchange_reates_df.printSchema()
+exchange_rates_df.show()
+
+
