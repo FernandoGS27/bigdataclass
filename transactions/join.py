@@ -73,7 +73,7 @@ exchange_rates_schema = StructType([StructField("currency", StringType()),
 exchange_rates_df = spark.read.csv('exchange_rates.csv',
                                     schema=exchange_rates_schema,
                                     header=True)
-exchange_reates_df.printSchema()
+exchange_rates_df.printSchema()
 exchange_rates_df.show()
 
 
