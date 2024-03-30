@@ -77,8 +77,8 @@ exchange_rates_df.printSchema()
 exchange_rates_df.show()
 
 # Join to exchange_rates_df table
-join_ex_rate_df = joint_df.join(exchange_rates_df, joint_df.currency == exchange_rates_df.currency)
-join_ex_rate_df.printSchema()
-join_df.show()
+joint_ex_rate_df = joint_df.joint(exchange_rates_df, joint_df.currency == exchange_rates_df.currency)
+joint_ex_rate_df.printSchema()
+joint_df.show()
 
 
