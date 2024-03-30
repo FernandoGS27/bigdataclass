@@ -84,6 +84,6 @@ joint_ex_rate_df.show()
 
 # Final dataframe
 
-final_df = joint_ex_rate_df.withColumn('amount_adjusted', col('amount') * col('rate').drop('id')
+final_df = joint_ex_rate_df.withColumn('amount_adjusted', col('amount') * col('rate')).drop('id')
 final_df.printSchema()
 final_df.show()
