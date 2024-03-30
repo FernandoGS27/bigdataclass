@@ -76,4 +76,9 @@ exchange_rates_df = spark.read.csv('exchange_rates.csv',
 exchange_rates_df.printSchema()
 exchange_rates_df.show()
 
+# Join to exchange_rates_df table
+join_ex_rate_df = joint_df.join(exchange_rates_df, joint_df.currency == exchange_rates_df.currency)
+join_ex_rate_df.printSchema()
+join_df.show()
+
 
