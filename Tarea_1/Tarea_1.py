@@ -51,4 +51,5 @@ df_joined_1.show()
 #Ahora se hace un left join entre el primer join y curso para obtener los creditos
 
 df_joined_2=df_joined_1.join(curso_df,on='Codigo de Curso',how='left')
-df_joined_2.summary().show()
+#df_joined_2.summary().show()
+f_joined_2.show()
