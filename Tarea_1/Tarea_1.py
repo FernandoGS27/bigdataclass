@@ -12,7 +12,7 @@ estudiantes_schema = StructType([StructField('Numero de Carnet',IntegerType()),
                                 StructField('Carrera',StringType())])
                                 
 
-estudiantes_df = spark.read.csv('estudiantes.csv',
+estudiantes_df = spark.read.csv('estudiante.csv',
                                     schema=estudiantes_schema,
                                     header=False)
                                     
