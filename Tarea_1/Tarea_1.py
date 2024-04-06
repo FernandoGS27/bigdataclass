@@ -1,0 +1,33 @@
+from datetime import datetime
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, date_format, udf
+from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
+                               StructField, StructType, TimestampType)
+
+spark = SparkSession.builder.appName("Tarea_1").getOrCreate()
+
+estudiantes_schema = StructType([StructField('Numero de Carnet'),IntegerType()),
+                                StructField('Nombre Completo'),StringType()),
+                                StructField('Carrera'),StringType())])
+                                
+
+estudiantes_df = spark.read.csv('estudiantes.csv',
+                                    schema=estudiantes_schema,
+                                    header=False)
+                                    
+curso_schema = StructType([StructField('Codigo de Curso'),IntegerType()),
+                                StructField('Credito'),IntegerType()),
+                                StructField('Carrera'),StringType())])
+                                
+curso_df = spark.read.csv('curso.csv',
+                                    schema=curso_schema,
+                                    header=False)
+                                    
+nota_schema = StructType([StructField('Numero de Carnet'),IntegerType()),
+                                StructField('Codigo de Curso'),IntegerType()),
+                                StructField('Carrera'),IntegerType())])
+                                
+estudiantes_df = spark.read.csv('nota.csv',
+                                    schema=nota_schema,
+                                    header=False)
