@@ -39,3 +39,10 @@ nota_df = spark.read.csv('nota.csv',
                                     
 nota_df.printSchema()
 nota_df.show()
+
+##Joins##
+
+##Primero se hace un left join entre Nota y Estudiante. Esto implica que los estudiantes que aparecen el df 'estudiante' pero no no matricularan curso dentro del periodo de referencia no aparecen en el df 'Nota' y por tanto no son considerados
+
+df_joined_1= nota_df.join(estudiantes_df.join,on='Numero de Carnet', how='left')
+df_joined_1.summary.show()
