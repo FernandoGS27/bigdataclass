@@ -16,6 +16,9 @@ estudiantes_df = spark.read.csv('estudiantes.csv',
                                     schema=estudiantes_schema,
                                     header=False)
                                     
+estudiantes_df.printSchema()
+estudiantes_df.show()
+                                    
 curso_schema = StructType([StructField('Codigo de Curso'),IntegerType()),
                                 StructField('Credito'),IntegerType()),
                                 StructField('Carrera'),StringType())])
@@ -23,11 +26,16 @@ curso_schema = StructType([StructField('Codigo de Curso'),IntegerType()),
 curso_df = spark.read.csv('curso.csv',
                                     schema=curso_schema,
                                     header=False)
+curso_df.printSchema()
+curso_df.show()
                                     
 nota_schema = StructType([StructField('Numero de Carnet'),IntegerType()),
                                 StructField('Codigo de Curso'),IntegerType()),
                                 StructField('Carrera'),IntegerType())])
                                 
-estudiantes_df = spark.read.csv('nota.csv',
+nota_df = spark.read.csv('nota.csv',
                                     schema=nota_schema,
                                     header=False)
+                                    
+nota_df.printSchema()
+nota_df.show()
