@@ -7,9 +7,9 @@ from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
 
 spark = SparkSession.builder.appName("Tarea_1").getOrCreate()
 
-estudiantes_schema = StructType([StructField('Numero de Carnet'),IntegerType()),
-                                StructField('Nombre Completo'),StringType()),
-                                StructField('Carrera'),StringType())])
+estudiantes_schema = StructType([StructField('Numero de Carnet',IntegerType()),
+                                StructField('Nombre Completo',StringType()),
+                                StructField('Carrera',StringType())])
                                 
 
 estudiantes_df = spark.read.csv('estudiantes.csv',
@@ -19,9 +19,9 @@ estudiantes_df = spark.read.csv('estudiantes.csv',
 estudiantes_df.printSchema()
 estudiantes_df.show()
                                     
-curso_schema = StructType([StructField('Codigo de Curso'),IntegerType()),
-                                StructField('Credito'),IntegerType()),
-                                StructField('Carrera'),StringType())])
+curso_schema = StructType([StructField('Codigo de Curso',IntegerType()),
+                                StructField('Credito',IntegerType()),
+                                StructField('Carrera',StringType())])
                                 
 curso_df = spark.read.csv('curso.csv',
                                     schema=curso_schema,
@@ -29,9 +29,9 @@ curso_df = spark.read.csv('curso.csv',
 curso_df.printSchema()
 curso_df.show()
                                     
-nota_schema = StructType([StructField('Numero de Carnet'),IntegerType()),
-                                StructField('Codigo de Curso'),IntegerType()),
-                                StructField('Carrera'),IntegerType())])
+nota_schema = StructType([StructField('Numero de Carnet',IntegerType()),
+                                StructField('Codigo de Curso',IntegerType()),
+                                StructField('Carrera',IntegerType())])
                                 
 nota_df = spark.read.csv('nota.csv',
                                     schema=nota_schema,
