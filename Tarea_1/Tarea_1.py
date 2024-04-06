@@ -31,7 +31,7 @@ curso_df.show()
                                     
 nota_schema = StructType([StructField('Numero de Carnet',IntegerType()),
                                 StructField('Codigo de Curso',IntegerType()),
-                                StructField('Carrera',IntegerType())])
+                                StructField('Nota',FloatType())])
                                 
 nota_df = spark.read.csv('nota.csv',
                                     schema=nota_schema,
