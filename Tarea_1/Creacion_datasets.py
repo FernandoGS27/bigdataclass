@@ -47,22 +47,34 @@ print(course_df.info())
 
 new_dataset=pd.merge(student_df,course_df,'inner',left_on='career',right_on='career')
 
-
-new_dataset['Grade'] = np.random.normal(loc=70, scale=15, size=len(new_dataset))
-new_dataset['Grade'] = new_dataset['Grade'].clip(0, 100)
-new_dataset['Grade'] = new_dataset['Grade'].round(1) 
-
-indices_to_delete = np.random.choice(new_dataset.index, 4000, replace=False)
+#Se quitan 3000 random records para que todos los estudiantes no lleven la misma cantidad de cursos
+indices_to_delete = np.random.choice(new_dataset.index, 3000, replace=False)
 
 # Create a new DataFrame with 4000 records removed
 new_df = new_dataset.drop(indices_to_delete)
 new_df=new_df.drop(columns=['student name','career','course credit'])
-new_df=new_df.reindex(columns=['id','Course_id','Grade'])
 
+#Se quitan estudiantes que no matricularon
+new_df = new_df[~new_df['id'].isin([25,87,150,458,356,158,825,258,725,259])]
+
+#Se quita la carrera de Fisica que no fue matriculada por ningun estudiante
+new_df = new_df[~new_df['Course_id'].isin(['60','61','62','63','64','65','66','67','68','69'])]
+
+#Se añadeden records para loas estudiantes que han llevado el curso mas de una vez
+duplicates = new_df.sample(n=700,replace=True)
+new_df_2=pd.concat([new_df,duplicates],ignore_index=True)
+
+#Se añade nota para cada curso
+new_df_2['Grade'] = np.random.normal(loc=70, scale=15, size=len(new_df_2))
+new_df_2['Grade'] = new_df_2['Grade'].clip(0, 100)
+new_df_2['Grade'] = new_df_2['Grade'].round(1)
+
+#Se ordenan las columnas
+new_df_2=new_df_2.reindex(columns=['id','Course_id','Grade'])
 
 print(new_df.info())
 print(new_df.head(15))
 
 student_df.to_csv('estudiante.csv', index=False)
 course_df.to_csv('curso.csv', index=False)
-new_df.to_csv('nota.csv',index=False)
+new_df_2.to_csv('nota.csv',index=False)
