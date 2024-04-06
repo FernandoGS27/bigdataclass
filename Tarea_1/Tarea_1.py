@@ -46,3 +46,4 @@ nota_df.show()
 
 df_joined_1= nota_df.join(estudiantes_df,on='Numero de Carnet', how='left')
 df_joined_1.summary().show()
+df_joined_1.show()
