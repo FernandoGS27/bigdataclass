@@ -52,4 +52,4 @@ df_joined_1.show()
 
 df_joined_2=df_joined_1.join(curso_df,on='Codigo de Curso',how='left')
 #df_joined_2.summary().show()
-f_joined_2.show()
+df_joined_2.show()
