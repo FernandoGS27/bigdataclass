@@ -45,4 +45,4 @@ nota_df.show()
 ##Primero se hace un left join entre Nota y Estudiante. Esto implica que los estudiantes que aparecen el df 'estudiante' pero no no matricularan curso dentro del periodo de referencia no aparecen en el df 'Nota' y por tanto no son considerados
 
 df_joined_1= nota_df.join(estudiantes_df,on='Numero de Carnet', how='left')
-df_joined_1.summary.show()
+df_joined_1.summary().show()
