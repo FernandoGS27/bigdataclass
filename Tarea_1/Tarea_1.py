@@ -72,7 +72,7 @@ agrupar_por_estudiante_sumas_df.show()
 promedio_poderado_df=agrupar_por_estudiante_sumas_df.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
 promedio_poderado_df.show()
 
-particion_carrera_df = Window.partitionBy("Carrera").orderby(col("promedio_ponderado").desc())
+particion_carrera_df = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
 
 rankin_df = promedio_poderado_df.withColumn("rank",rank().over(particion_carrera_df))
 
