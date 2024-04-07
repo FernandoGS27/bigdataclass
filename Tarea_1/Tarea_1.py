@@ -53,3 +53,6 @@ df_joined_1.show()
 df_joined_2=df_joined_1.join(curso_df,on='Codigo de Curso',how='left')
 #df_joined_2.summary().show()
 df_joined_2.show()
+
+nota_ponderada_df = df_joined_2.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c')
+nota_ponderada_df.show()
