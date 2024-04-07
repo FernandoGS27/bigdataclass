@@ -60,3 +60,10 @@ nota_ponderada_df.printSchema()
 
 agrupar_por_estudiante_df = nota_ponderada_df.groupBy("Nombre Completo", "Carrera").sum()
 agrupar_por_estudiante_df.show()
+
+agrupar_por_estudiante_sumas_df = \
+    agrupar_por_estudiante_df.select(
+        col('Nombre Completo'),
+        col('Carrera'),
+        col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
+agrupar_por_estudiante_sumas_df.show()
