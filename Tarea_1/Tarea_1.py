@@ -58,5 +58,5 @@ nota_ponderada_df = df_joined_2.withColumn('nota_ponderada', col('Nota') * col('
 nota_ponderada_df.show()
 nota_ponderada_df.printSchema()
 
-agrupar_por_estudiante_df = nota_ponderada_df.groupby('Nombre Completo','Carrera').agg(sum('Credito'),sum('nota_ponderada'))
+agrupar_por_estudiante_df = nota_ponderada_df.groupBy("Nombre Completo", "Carrera").sum()
 agrupar_por_estudiante_df.show()
