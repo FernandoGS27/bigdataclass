@@ -67,3 +67,6 @@ agrupar_por_estudiante_sumas_df = \
         col('Carrera'),
         col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
 agrupar_por_estudiante_sumas_df.show()
+
+promedio_poderado_df=agrupar_por_estudiante_sumas_df.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
+promedio_poderado_df.show()
