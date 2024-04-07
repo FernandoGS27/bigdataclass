@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, date_format, udf
+from pyspark.sql import Window
+from pyspark.sql.functions import col, date_format, udf, rank
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
 
@@ -70,3 +71,11 @@ agrupar_por_estudiante_sumas_df.show()
 
 promedio_poderado_df=agrupar_por_estudiante_sumas_df.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
 promedio_poderado_df.show()
+
+particion_carrera_df = Window.partitionBy("Carrera").orderby(col("promedio_ponderado").desc())
+
+rankin_df = promedio_poderado_df.withColumn("rank",rank().over(particion_carrera_df))
+
+mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= 2).drop("rank")
+
+mejores_dos_promedios_carrera.show()
