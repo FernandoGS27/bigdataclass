@@ -8,38 +8,37 @@ from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
 
 spark = SparkSession.builder.appName("Tarea_1").getOrCreate()
 
-# estudiantes_schema = StructType([StructField('Numero de Carnet',IntegerType()),
-                                # StructField('Nombre Completo',StringType()),
-                                # StructField('Carrera',StringType())])
+estudiantes_schema = structtype([structfield('numero de carnet',integertype()),
+                                structfield('nombre completo',stringtype()),
+                                structfield('carrera',stringtype())])
                                 
-
-# estudiantes_df = spark.read.csv('estudiante.csv',
-                                    # schema=estudiantes_schema,
-                                    # header=False)
+ estudiantes_df = spark.read.csv('estudiante.csv',
+                                    schema=estudiantes_schema,
+                                     header=false)
                                     
-# estudiantes_df.printSchema()
-# estudiantes_df.show()
+estudiantes_df.printschema()
+estudiantes_df.show()
                                     
-# curso_schema = StructType([StructField('Codigo de Curso',IntegerType()),
-                                # StructField('Credito',IntegerType()),
-                                # StructField('Carrera_c',StringType())])
+curso_schema = structtype([structfield('codigo de curso',integertype()),
+                                structfield('credito',integertype()),
+                                structfield('carrera_c',stringtype())])
                                 
-# curso_df = spark.read.csv('curso.csv',
-                                    # schema=curso_schema,
-                                    # header=False)
-# curso_df.printSchema()
-# curso_df.show()
+curso_df = spark.read.csv('curso.csv',
+                                    schema=curso_schema,
+                                    header=false)
+curso_df.printschema()
+curso_df.show()
                                     
-# nota_schema = StructType([StructField('Numero de Carnet',IntegerType()),
-                                # StructField('Codigo de Curso',IntegerType()),
-                                # StructField('Nota',FloatType())])
+nota_schema = structtype([structfield('numero de carnet',integertype()),
+                                structfield('codigo de curso',integertype()),
+                                structfield('nota',floattype())])
                                 
-# nota_df = spark.read.csv('nota.csv',
-                                    # schema=nota_schema,
-                                    # header=False)
+nota_df = spark.read.csv('nota.csv',
+                                    schema=nota_schema,
+                                    header=false)
                                     
-# nota_df.printSchema()
-# nota_df.show()
+nota_df.printschema()
+#nota_df.show()
 
 ##Joins##
 
@@ -70,8 +69,8 @@ def unir_datos(nota,estudiantes,curso):
     segundo_join_df: La union de los tres dataframes  
     '''
     
-    primer_join_df = nota_df.join(estudiantes_df,on = 'Numero de Carnet', how = 'left')
-    segundo_join_df = primer_join_df.join(curso_df,on = 'Codigo de Curso',how = 'left').drop('Carrera_c')
+    primer_join_df = nota.join(estudiantes,on = 'Numero de Carnet', how = 'left')
+    segundo_join_df = primer_join_df.join(curso,on = 'Codigo de Curso',how = 'left').drop('Carrera_c')
 
     return segundo_join_df
     
