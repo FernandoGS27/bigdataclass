@@ -1,4 +1,4 @@
-from .Tarea_1 import unir_datos, agregaciones_parciales, resultados_finales
+from .Tarea_1 import unir_datos
 
 def test_unir_datos(spark_session):
     nota_data = [(1,980,70.5), (1,325,85.4),(2,980,55.4),(3,725,95.5), (4,589,45.4), (4,589,89.3)]
