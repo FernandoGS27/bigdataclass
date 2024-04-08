@@ -57,9 +57,18 @@ nota_df.show()
 
 def unir_datos(nota,estudiantes,curso):
     '''
-    La funcion recibe Tres dataframes y devuleve la union de los 3
+    La funcion recibe Tres dataframes y devuelve la union de los 3.
     Se asume que los estudiantes listados en el Dataset 'estudiantes_df' pero no en el dataset 'nota_df' no matricularon cursos
-    en el periodo de referencia y por ende no se toman en cuenta para la obtencion del promedio'''
+    en el periodo de referencia y por ende no se toman en cuenta para la obtencion de los mejores promedios.
+    
+    Args:
+    nota: dataframe
+    estudiante: dataframe
+    curso: dataframe
+    
+    Return:
+    segundo_join_df: La union de los tres dataframes  
+    '''
     
     primer_join_df = nota_df.join(estudiantes_df,on = 'Numero de Carnet', how = 'left')
     segundo_join_df = primer_join_df.join(curso_df,on = 'Codigo de Curso',how = 'left')
@@ -71,22 +80,50 @@ df_joined_2.show()
 
 
 
-nota_ponderada_df = df_joined_2.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c','Codigo de Curso','Nota','Numero de Carnet')
-nota_ponderada_df.show()
-nota_ponderada_df.printSchema()
+# nota_ponderada_df = df_joined_2.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c','Codigo de Curso','Nota','Numero de Carnet')
+# nota_ponderada_df.show()
+# nota_ponderada_df.printSchema()
 
-agrupar_por_estudiante_df = nota_ponderada_df.groupBy("Nombre Completo", "Carrera").sum()
-agrupar_por_estudiante_df.show()
+# agrupar_por_estudiante_df = nota_ponderada_df.groupBy("Nombre Completo", "Carrera").sum()
+# agrupar_por_estudiante_df.show()
 
-agrupar_por_estudiante_sumas_df = \
-    agrupar_por_estudiante_df.select(
+# agrupar_por_estudiante_sumas_df = \
+    # agrupar_por_estudiante_df.select(
+        # col('Nombre Completo'),
+        # col('Carrera'),
+        # col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
+# agrupar_por_estudiante_sumas_df.show()
+
+# promedio_poderado_df=agrupar_por_estudiante_sumas_df.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
+# promedio_poderado_df.show()
+
+def agregaciones_parciales(df):
+    '''La funcion recibe un dataframe creado por la funcion 'unir datos' y devuelve un nuevo dataframe que contiene datos correspondientes a 
+    Nombre Completo, Carrera y Promedio Ponderado para cada estudiante
+    
+    Args:
+    df: dataframe
+    
+    Return:
+    
+    promedio ponderado: dataframe
+    '''
+    nota_ponderada = df.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c','Codigo de Curso','Nota','Numero de Carnet')
+    agrupar_por_estudiante= nota_ponderada.groupBy("Nombre Completo", "Carrera").sum()
+    agrupar_por_estudiante_sumas = \
+    agrupar_por_estudiante.select(
         col('Nombre Completo'),
         col('Carrera'),
         col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
-agrupar_por_estudiante_sumas_df.show()
+    promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
+    
+    return promedio_ponderado
+    
+promedio_ponderado_df = agregaciones_parciales(df_joined_2)
+promedio_ponderado_df.show()
+    
 
-promedio_poderado_df=agrupar_por_estudiante_sumas_df.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
-promedio_poderado_df.show()
+    
 
 particion_carrera_df = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
 
