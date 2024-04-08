@@ -119,8 +119,8 @@ def agregaciones_parciales(df):
    
     return promedio_ponderado
     
-# promedio_ponderado_df = agregaciones_parciales(df_joined_2)
-# promedio_ponderado_df.show()
+promedio_ponderado_df = agregaciones_parciales(df_joined_2)
+promedio_ponderado_df.show()
     
 
     
