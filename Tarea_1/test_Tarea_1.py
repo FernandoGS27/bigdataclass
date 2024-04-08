@@ -7,7 +7,7 @@ def test_unir_datos(spark_session):
     curso_data = [(980,3,'Computacion'),(325,2,'Computacion'),(589,2,'Fisica'),(725,4,'Computacion')]
     curso_ds = spark_session.createDataFrame(curso_data,['Codigo de Curso','Credito','Carrera_c'])
     
-    estudiantes_data = [(1,'John Lennon', 'Computacion'),(2,'Paul McCartney', 'Computacion'), (3, 'Ringo Starr', 'Computacion') (4,'George Harrison','Fisica'),(5,'Pete Best', 'Fisica'])
+    estudiantes_data = [(1,'John Lennon', 'Computacion'),(2,'Paul McCartney', 'Computacion'), (3, 'Ringo Starr', 'Computacion') (4,'George Harrison','Fisica'),(5,'Pete Best','Fisica')])
     estudiantes_ds = spark_session.createDataFrame(estudiantes_data, ['Numero de Carnet','Nombre Completo','Carrera']
     
     actual_ds = unir_datos(nota_ds,estudiantes_ds,curso_ds)
