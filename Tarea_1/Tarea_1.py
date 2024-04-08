@@ -116,19 +116,40 @@ def agregaciones_parciales(df):
         col('Carrera'),
         col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
     promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
-    
+   
     return promedio_ponderado
     
-promedio_ponderado_df = agregaciones_parciales(df_joined_2)
-promedio_ponderado_df.show()
+# promedio_ponderado_df = agregaciones_parciales(df_joined_2)
+# promedio_ponderado_df.show()
     
 
     
 
-particion_carrera_df = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
+# particion_carrera_df = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
 
-rankin_df = promedio_poderado_df.withColumn("rank",rank().over(particion_carrera_df))
+# rankin_df = promedio_ponderado_df.withColumn("rank",rank().over(particion_carrera_df))
 
-mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= 2).drop("rank")
+# mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= 2).drop("rank")
 
+# mejores_dos_promedios_carrera.show()
+
+
+def resultados_finales(df):
+    '''La funcion recibe el dataframe generado en la funcion agregaciones parciales y devuelve los dos mejores promedios por cada carrera
+    Args:
+    df: dataframe
+    
+    Return:
+    
+    mejores_dos_promedios_carrera: dataframe
+    
+    '''
+    particion_carrera = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
+    rankin_df = df.withColumn("rank",rank().over(particion_carrera))
+    mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= 2).drop("rank")
+    mejores_dos_promedios_carrera_renombrada = mejores_dos_promedios_carrera.withColumnRenamed('promedio_ponderado','Mejores_promedios')
+    
+    return mejores_dos_promedios_carrera_renombrada
+    
+mejores_dos_promedios_carrera_df = resultados_finales(promedio_ponderado_df)
 mejores_dos_promedios_carrera.show()
