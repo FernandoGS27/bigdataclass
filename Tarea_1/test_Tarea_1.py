@@ -2,7 +2,7 @@ from .Tarea_1 import unir_datos, agregaciones_parciales, resultados_finales
 
 def test_unir_datos(spark_session):
     nota_data = [(1,980,70.5), (1,325,85.4),(2,980,55.4),(3,725,95.5), (4,589,45.4), (4,589,89.3)]
-    nota_ds = spark_session.createDataFrame(nota_data, 'Numero de Carnet','Codigo de Curso','Nota')
+    nota_ds = spark_session.createDataFrame(nota_data, ['Numero de Carnet','Codigo de Curso','Nota'])
     
     estudiantes_data = [(1,'John Lennon', 'Computacion'),(2,'Paul McCartney', 'Computacion'), (3, 'Ringo Starr', 'Computacion') (4,'George Harrison','Fisica'),(5,'Pete Best','Fisica')]
     estudiantes_ds = spark_session.createDataFrame(estudiantes_data, ['Numero de Carnet','Nombre Completo','Carrera'])
