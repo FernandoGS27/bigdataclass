@@ -45,15 +45,31 @@ nota_df.show()
 
 ##Primero se hace un left join entre Nota y Estudiante. Esto implica que los estudiantes que aparecen el df 'estudiante' pero no no matricularan curso dentro del periodo de referencia no aparecen en el df 'Nota' y por tanto no son considerados
 
-df_joined_1= nota_df.join(estudiantes_df,on='Numero de Carnet', how='left')
-#df_joined_1.summary().show()
-df_joined_1.show()
+# df_joined_1= nota_df.join(estudiantes_df,on='Numero de Carnet', how='left')
+# #df_joined_1.summary().show()
+# df_joined_1.show()
 
-#Ahora se hace un left join entre el primer join y curso para obtener los creditos
+# #Ahora se hace un left join entre el primer join y curso para obtener los creditos
 
-df_joined_2=df_joined_1.join(curso_df,on='Codigo de Curso',how='left')
-#df_joined_2.summary().show()
+# df_joined_2=df_joined_1.join(curso_df,on='Codigo de Curso',how='left')
+# #df_joined_2.summary().show()
+# df_joined_2.show()
+
+def unir_datos(nota,estudiantes,curso):
+    '''
+    La funcion recibe Tres dataframes y devuleve la union de los 3
+    Se asume que los estudiantes listados en el Dataset 'estudiantes_df' pero no en el dataset 'nota_df' no matricularon cursos
+    en el periodo de referencia y por ende no se toman en cuenta para la obtencion del promedio'''
+    
+    primer_join_df = nota_df.join(estudiantes_df,on = 'Numero de Carnet', how = 'left')
+    segundo_join_df = primer_join_df.join(curso_df,on = 'Codigo de Curso',how = 'left')
+
+    return segundo_join_df
+    
+df_joined_2 = unir_datos(nota_df,estudiantes_df,curso_df)
 df_joined_2.show()
+
+
 
 nota_ponderada_df = df_joined_2.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c','Codigo de Curso','Nota','Numero de Carnet')
 nota_ponderada_df.show()
