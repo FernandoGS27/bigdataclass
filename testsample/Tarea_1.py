@@ -8,7 +8,7 @@ from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
 
 spark = SparkSession.builder.appName("Tarea_1").getOrCreate()
 
-estudiantes_schema = structtype([structfield('numero de carnet',integertype()),
+estudiantes_schema = structType([structfield('numero de carnet',integertype()),
                                 structfield('nombre completo',stringtype()),
                                 structfield('carrera',stringtype())])
                                 
@@ -19,7 +19,7 @@ estudiantes_df = spark.read.csv('estudiante.csv',
 estudiantes_df.printschema()
 estudiantes_df.show()
                                     
-curso_schema = structtype([structfield('codigo de curso',integertype()),
+curso_schema = structType([structfield('codigo de curso',integertype()),
                                 structfield('credito',integertype()),
                                 structfield('carrera_c',stringtype())])
                                 
@@ -29,7 +29,7 @@ curso_df = spark.read.csv('curso.csv',
 curso_df.printschema()
 curso_df.show()
                                     
-nota_schema = structtype([structfield('numero de carnet',integertype()),
+nota_schema = structType([structfield('numero de carnet',integertype()),
                                 structfield('codigo de curso',integertype()),
                                 structfield('nota',floattype())])
                                 
