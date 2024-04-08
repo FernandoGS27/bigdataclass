@@ -152,4 +152,4 @@ def resultados_finales(df):
     return mejores_dos_promedios_carrera_renombrada
     
 mejores_dos_promedios_carrera_df = resultados_finales(promedio_ponderado_df)
-mejores_dos_promedios_carrera.show()
+mejores_dos_promedios_carrera_df.show()
