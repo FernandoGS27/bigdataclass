@@ -8,37 +8,38 @@ from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
 
 spark = SparkSession.builder.appName("Tarea_1").getOrCreate()
 
-estudiantes_schema = structType([structfield('numero de carnet',integertype()),
-                                structfield('nombre completo',stringtype()),
-                                structfield('carrera',stringtype())])
+estudiantes_schema = StructType([StructField('Numero de Carnet',IntegerType()),
+                                StructField('Nombre Completo',StringType()),
+                                StructField('Carrera',StringType())])
                                 
+
 estudiantes_df = spark.read.csv('estudiante.csv',
                                     schema=estudiantes_schema,
-                                     header=false)
+                                    header=False)
                                     
-estudiantes_df.printschema()
+estudiantes_df.printSchema()
 estudiantes_df.show()
                                     
-curso_schema = structType([structfield('codigo de curso',integertype()),
-                                structfield('credito',integertype()),
-                                structfield('carrera_c',stringtype())])
+curso_schema = StructType([StructField('Codigo de Curso',IntegerType()),
+                                StructField('Credito',IntegerType()),
+                                StructField('Carrera_c',StringType())])
                                 
 curso_df = spark.read.csv('curso.csv',
                                     schema=curso_schema,
-                                    header=false)
-curso_df.printschema()
+                                    header=False)
+curso_df.printSchema()
 curso_df.show()
                                     
-nota_schema = structType([structfield('numero de carnet',integertype()),
-                                structfield('codigo de curso',integertype()),
-                                structfield('nota',floattype())])
+nota_schema = StructType([StructField('Numero de Carnet',IntegerType()),
+                                StructField('Codigo de Curso',IntegerType()),
+                                StructField('Nota',FloatType())])
                                 
 nota_df = spark.read.csv('nota.csv',
                                     schema=nota_schema,
-                                    header=false)
+                                    header=False)
                                     
-nota_df.printschema()
-#nota_df.show()
+nota_df.printSchema()
+nota_df.show()
 
 ##Joins##
 
