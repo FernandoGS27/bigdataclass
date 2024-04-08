@@ -71,7 +71,7 @@ def unir_datos(nota,estudiantes,curso):
     '''
     
     primer_join_df = nota_df.join(estudiantes_df,on = 'Numero de Carnet', how = 'left')
-    segundo_join_df = primer_join_df.join(curso_df,on = 'Codigo de Curso',how = 'left')
+    segundo_join_df = primer_join_df.join(curso_df,on = 'Codigo de Curso',how = 'left').drop('Carrera_c')
 
     return segundo_join_df
     
