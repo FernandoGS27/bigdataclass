@@ -22,7 +22,7 @@ def test_unir_datos(spark_session):
     
 def test_agregaciones_parciales(spark_session):
 
-    prueba_data = [(980,1,70.5,'John Lennon','Computacion',3),(325,1,85.4,'John Lennon','Computacion',2),(980,2,55.4,'Paul McCartney','Computacion',4),(725,3,95.5,'Ringo Starr','Computacion',4)\
+    prueba_data = [(980,1,70.5,'John Lennon','Computacion',3),(325,1,85.4,'John Lennon','Computacion',2),(980,2,55.4,'Paul McCartney','Computacion',4),(725,3,95.5,'Ringo Starr','Computacion',4),\
                     (589,4,45.4,'George Harrison','Fisica',2),(589,4,89.3'George Harrison','Fisica',2)]
                     
     prueba_ds = saprk_session.createDataFrame(prueba_data, ['Codigo de Curso','Numero de Carnet','Nota','Nombre Completo','Carrera','Credito'])
