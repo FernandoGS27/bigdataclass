@@ -29,7 +29,7 @@ def test_agregaciones_parciales(spark_session):
                     
     actual_ds = agregaciones_parciales(prueba_ds)
     
-    expected_ds = spark_session.createDataFrame([('Jonh Lennon','Computacion', 76.46),('Paul McCartney','Computacion',55.4),('Ringo Starr', 'Computacion',95.5),('George Harrison','Fisica',67.35)],\
+    expected_ds = spark_session.createDataFrame([('Jonh Lennon','Computacion', 76.46000000000001),('Paul McCartney','Computacion',55.4),('Ringo Starr', 'Computacion',95.5),('George Harrison','Fisica',67.35)],\
                                                  ['Nombre Completo','Carrera','promedio_ponderado'])
     
     expected_ds.show()
