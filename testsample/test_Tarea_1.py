@@ -1,4 +1,4 @@
-from .Tarea_1 import unir_datos
+from .Tarea_1 import unir_datos, agregaciones_parciales, resultados_finales
 
 def test_unir_datos(spark_session):
     nota_data = [(1,980,70.5), (1,325,85.4),(2,980,55.4),(3,725,95.5), (4,589,45.4), (4,589,89.3)]
@@ -15,6 +15,23 @@ def test_unir_datos(spark_session):
     expected_ds = spark_session.createDataFrame([(980,1,70.5,'John Lennon','Computacion',3),(325,1,85.4,'John Lennon','Computacion',2),(980,2,55.4,'Paul McCartney','Computacion',3),\
                                                   (725,3,95.5,'Ringo Starr', 'Computacion',4),(589,4,45.4,'George Harrison','Fisica',2),(589,4,89.3,'George Harrison','Fisica',2)],\
                                                   ['Codigo de Curso','Numero de Carnet','Nota','Nombre Completo','Carrera','Credito'])
+    expected_ds.show()
+    actual_ds.show()
+    
+    assert actual_ds.collect() == expected_ds.collect()
+    
+def test_agregaciones_parciales(spark_session):
+
+    prueba_data = [(980,1,70.5,'John Lennon','Computacion',3),(325,1,85.4,'John Lennon','Computacion',2),(980,2,55.4,'Paul McCartney','Computacion',4),(725,3,95.5,'Ringo Starr','Computacion',4)\
+                    (589,4,45.4,'George Harrison','Fisica',2),(589,4,89.3'George Harrison','Fisica',2)]
+                    
+    prueba_ds = saprk_session.createDataFrame(prueba_data, ['Codigo de Curso','Numero de Carnet','Nota','Nombre Completo','Carrera','Credito'])
+                    
+    actual_ds = agregaciones_parciales(prueba_ds)
+    
+    expected_ds = spark_session.createDataFrame([('Jonh Lennon','Computacion', 76.46),('Paul McCartney','Computacion',55.4),('Ringo Starr', 'Computacion',95.5),('George Harrison','Fisica',67.35)],\
+                                                 ['Nombre Completo','Carrera','promedio_ponderado'])
+    
     expected_ds.show()
     actual_ds.show()
     
