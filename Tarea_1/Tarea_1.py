@@ -1,8 +1,7 @@
 from datetime import datetime
-
 from pyspark.sql import SparkSession
 from pyspark.sql import Window
-from pyspark.sql.functions import col, date_format, udf, rank
+from pyspark.sql.functions import col, date_format, udf, rank, round
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
 
@@ -41,19 +40,6 @@ nota_df = spark.read.csv('nota.csv',
 nota_df.printSchema()
 nota_df.show()
 
-##Joins##
-
-##Primero se hace un left join entre Nota y Estudiante. Esto implica que los estudiantes que aparecen el df 'estudiante' pero no no matricularan curso dentro del periodo de referencia no aparecen en el df 'Nota' y por tanto no son considerados
-
-# df_joined_1= nota_df.join(estudiantes_df,on='Numero de Carnet', how='left')
-# #df_joined_1.summary().show()
-# df_joined_1.show()
-
-# #Ahora se hace un left join entre el primer join y curso para obtener los creditos
-
-# df_joined_2=df_joined_1.join(curso_df,on='Codigo de Curso',how='left')
-# #df_joined_2.summary().show()
-# df_joined_2.show()
 
 def unir_datos(nota,estudiantes,curso):
     '''
@@ -70,8 +56,8 @@ def unir_datos(nota,estudiantes,curso):
     segundo_join_df: La union de los tres dataframes  
     '''
     
-    primer_join_df = nota_df.join(estudiantes_df,on = 'Numero de Carnet', how = 'left')
-    segundo_join_df = primer_join_df.join(curso_df,on = 'Codigo de Curso',how = 'left').drop('Carrera_c')
+    primer_join_df = nota.join(estudiantes,on = 'Numero de Carnet', how = 'left')
+    segundo_join_df = primer_join_df.join(curso,on = 'Codigo de Curso',how = 'left').drop('Carrera_c')
 
     return segundo_join_df
     
@@ -79,23 +65,6 @@ df_joined_2 = unir_datos(nota_df,estudiantes_df,curso_df)
 df_joined_2.show()
 
 
-
-# nota_ponderada_df = df_joined_2.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c','Codigo de Curso','Nota','Numero de Carnet')
-# nota_ponderada_df.show()
-# nota_ponderada_df.printSchema()
-
-# agrupar_por_estudiante_df = nota_ponderada_df.groupBy("Nombre Completo", "Carrera").sum()
-# agrupar_por_estudiante_df.show()
-
-# agrupar_por_estudiante_sumas_df = \
-    # agrupar_por_estudiante_df.select(
-        # col('Nombre Completo'),
-        # col('Carrera'),
-        # col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
-# agrupar_por_estudiante_sumas_df.show()
-
-# promedio_poderado_df=agrupar_por_estudiante_sumas_df.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
-# promedio_poderado_df.show()
 
 def agregaciones_parciales(df):
     '''La funcion recibe un dataframe creado por la funcion 'unir datos' y devuelve un nuevo dataframe que contiene datos correspondientes a 
@@ -110,31 +79,25 @@ def agregaciones_parciales(df):
     '''
     nota_ponderada = df.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c','Codigo de Curso','Nota','Numero de Carnet')
     agrupar_por_estudiante= nota_ponderada.groupBy("Nombre Completo", "Carrera").sum()
+    
     agrupar_por_estudiante_sumas = \
     agrupar_por_estudiante.select(
         col('Nombre Completo'),
         col('Carrera'),
         col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
+        
     promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
+    
+    promedio_ponderado_redondeado = promedio_ponderado.withColumn('promedio_ponderado',round(col('promedio_ponderado'),2))
    
-    return promedio_ponderado
+    return promedio_ponderado_redondeado
     
 promedio_ponderado_df = agregaciones_parciales(df_joined_2)
 promedio_ponderado_df.show()
     
 
-    
 
-# particion_carrera_df = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
-
-# rankin_df = promedio_ponderado_df.withColumn("rank",rank().over(particion_carrera_df))
-
-# mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= 2).drop("rank")
-
-# mejores_dos_promedios_carrera.show()
-
-
-def resultados_finales(df):
+def resultados_finales(df,N):
     '''La funcion recibe el dataframe generado en la funcion agregaciones parciales y devuelve los dos mejores promedios por cada carrera
     Args:
     df: dataframe
@@ -146,10 +109,10 @@ def resultados_finales(df):
     '''
     particion_carrera = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
     rankin_df = df.withColumn("rank",rank().over(particion_carrera))
-    mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= 2).drop("rank")
+    mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= N).drop("rank")
     mejores_dos_promedios_carrera_renombrada = mejores_dos_promedios_carrera.withColumnRenamed('promedio_ponderado','Mejores_promedios')
     
     return mejores_dos_promedios_carrera_renombrada
     
-mejores_dos_promedios_carrera_df = resultados_finales(promedio_ponderado_df)
+mejores_dos_promedios_carrera_df = resultados_finales(promedio_ponderado_df,3)
 mejores_dos_promedios_carrera_df.show()
