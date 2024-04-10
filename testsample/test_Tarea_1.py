@@ -44,7 +44,7 @@ def test_resultados_finales(spark_session):
     
     prueba_ds = spark_session.createDataFrame(prueba_data, ['Nombre Completo','Carrera','promedio_ponderado'])
     
-    actual_ds = resultados_finales(prueba_data)
+    actual_ds = resultados_finales(prueba_ds)
     
     expected_ds = spark_session.createDataFrame([('Ringo Starr','Computacion',95.4),('George Harrison','Fisica',67.35)],['Nombre Completo','Carrera','Mejores_promedios'])
     
