@@ -1,6 +1,7 @@
 from .Tarea_1 import unir_datos, agregaciones_parciales, resultados_finales
 
 def test_unir_datos(spark_session):
+
     nota_data = [(1,980,70.5), (1,325,85.4),(2,980,55.4),(3,725,95.5), (4,589,45.4), (4,589,89.3)]
     nota_ds = spark_session.createDataFrame(nota_data, ['Numero de Carnet','Codigo de Curso','Nota'])
     
@@ -36,5 +37,22 @@ def test_agregaciones_parciales(spark_session):
     actual_ds.show()
     
     assert actual_ds.collect() == expected_ds.collect()
+    
+def test_resultados_finales(spark_session):
+
+    prueba_data = [('John Lennon','Computacion',76.46),('Paul McCartney','Computacion',55.4),('Ringo Starr','Computacion',95.4),('George Harrison','Fisica',67.35)]
+    
+    prueba_ds = spark_session.createDataFrame(prueba_data, ['Nombre Completo','Carrera','promedio_ponderado'])
+    
+    actual_ds = resultados_finales(prueba_data)
+    
+    expected_ds = spark_session.createDataFrame([('Ringo Starr','Computacion',95.4),('George Harrison','Fisica',67.35)],['Nombre Completo','Carrera','Mejores_promedios'])
+    
+    expected_ds.show()
+    actual_ds.show()
+    
+    assert actual_ds.collect() == expected_ds.collect()
+    
+    
                     
 
