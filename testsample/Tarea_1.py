@@ -97,7 +97,7 @@ promedio_ponderado_df.show()
     
 
 
-def resultados_finales(df):
+def resultados_finales(df,N):
     '''La funcion recibe el dataframe generado en la funcion agregaciones parciales y devuelve los dos mejores promedios por cada carrera
     Args:
     df: dataframe
@@ -109,10 +109,10 @@ def resultados_finales(df):
     '''
     particion_carrera = Window.partitionBy("Carrera").orderBy(col("promedio_ponderado").desc())
     rankin_df = df.withColumn("rank",rank().over(particion_carrera))
-    mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= 2).drop("rank")
+    mejores_dos_promedios_carrera = rankin_df.filter(col("rank") <= N).drop("rank")
     mejores_dos_promedios_carrera_renombrada = mejores_dos_promedios_carrera.withColumnRenamed('promedio_ponderado','Mejores_promedios')
     
     return mejores_dos_promedios_carrera_renombrada
     
-mejores_dos_promedios_carrera_df = resultados_finales(promedio_ponderado_df)
+mejores_dos_promedios_carrera_df = resultados_finales(promedio_ponderado_df,3)
 mejores_dos_promedios_carrera_df.show()
