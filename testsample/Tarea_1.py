@@ -2,7 +2,7 @@ from datetime import datetime
 
 from pyspark.sql import SparkSession
 from pyspark.sql import Window
-from pyspark.sql.functions import col, date_format, udf, rank
+from pyspark.sql.functions import col, date_format, udf, rank, round
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
 
@@ -117,9 +117,9 @@ def agregaciones_parciales(df):
         col('Carrera'),
         col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
         
-    promedio_ponderado_sr = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
+    promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
     
-    promedio_ponderado_redondeado = promedio_ponderado_sr.withColumn('promedio_ponderado_redondeado',round(promedio_ponderado_sr.promedio_ponderado,2))
+    promedio_ponderado_redondeado = promedio_ponderado.withColumn('promedio_ponderado',round(col('promedio_ponderado'),2))
    
     return promedio_ponderado_redondeado
     
