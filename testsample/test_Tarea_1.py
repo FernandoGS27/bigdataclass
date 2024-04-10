@@ -46,7 +46,7 @@ def test_resultados_finales(spark_session):
     
     actual_ds = resultados_finales(prueba_ds)
     
-    expected_ds = spark_session.createDataFrame([('Ringo Starr','Computacion',95.4),('George Harrison','Fisica',67.35)],['Nombre Completo','Carrera','Mejores_promedios'])
+    expected_ds = spark_session.createDataFrame([('Ringo Starr','Computacion',95.4),('John Lennon','Computacion',76.46),('George Harrison','Fisica',67.35)],['Nombre Completo','Carrera','Mejores_promedios'])
     
     expected_ds.show()
     actual_ds.show()
