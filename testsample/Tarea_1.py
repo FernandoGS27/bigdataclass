@@ -110,14 +110,18 @@ def agregaciones_parciales(df):
     '''
     nota_ponderada = df.withColumn('nota_ponderada', col('Nota') * col('Credito')).drop('Carrera_c','Codigo de Curso','Nota','Numero de Carnet')
     agrupar_por_estudiante= nota_ponderada.groupBy("Nombre Completo", "Carrera").sum()
+    
     agrupar_por_estudiante_sumas = \
     agrupar_por_estudiante.select(
         col('Nombre Completo'),
         col('Carrera'),
         col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
-    promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", round(col('nota_ponderada') / col('Credito'),2)).drop('Credito', 'nota_ponderada')
+        
+    promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
+    
+    promedio_ponderado_redondeado = promedio_ponderado.withColumn('promedio_ponderado'round(col('promedio_ponderado'),2))
    
-    return promedio_ponderado
+    return promedio_ponderado_redondeado
     
 promedio_ponderado_df = agregaciones_parciales(df_joined_2)
 promedio_ponderado_df.show()
