@@ -115,7 +115,7 @@ def agregaciones_parciales(df):
         col('Nombre Completo'),
         col('Carrera'),
         col('sum(Credito)').alias('Credito'),col('sum(nota_ponderada)').alias('nota_ponderada'))
-    promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", col('nota_ponderada') / col('Credito')).drop('Credito', 'nota_ponderada')
+    promedio_ponderado = agrupar_por_estudiante_sumas.withColumn("promedio_ponderado", round(col('nota_ponderada') / col('Credito'),2)).drop('Credito', 'nota_ponderada')
    
     return promedio_ponderado
     
