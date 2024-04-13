@@ -8,4 +8,4 @@ df = spark.read.option("multiline","true").json("compras_1.json")
 df.printSchema()
 
 # Show the first few rows of the DataFrame
-df.show(truncate=False)
+df.show()
