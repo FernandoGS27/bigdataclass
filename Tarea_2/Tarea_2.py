@@ -1,4 +1,6 @@
 from pyspark.sql import SparkSession
+from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
+                               StructField, StructType, TimestampType)
 
 spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
