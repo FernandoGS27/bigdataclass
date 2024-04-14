@@ -42,3 +42,4 @@ df_exploded_2 = df_final.withColumn("nueva", arrays_zip("nombre", "cantidad","pr
 
 df_exploded_2.printSchema()
 df_exploded_2.show()
+df_exploded_2.summary().show()
