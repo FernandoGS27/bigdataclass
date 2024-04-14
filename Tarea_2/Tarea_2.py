@@ -68,7 +68,7 @@ def compras_jsons_a_dataframes(files):
     df_exploded_4 = df_exploded_3.select("numero_caja",col("nueva.nombre").alias("Nombre"), col("nueva.cantidad").alias("Cantidad"),col("nueva.precio_unitario").alias("Precio_Unitario"))
 
     dfs =  df_exploded_4.withColumn("Cantidad",col("Cantidad").cast("int"))
-    dfs = dfs.withColumn("Precio_Unitario"),col("Precio_Unitario").cast("float")
+    dfs = dfs.withColumn("Precio_Unitario",col("Precio_Unitario").cast("float"))
 
     return dfs
 
