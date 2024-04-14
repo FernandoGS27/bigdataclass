@@ -30,3 +30,6 @@ df_final.printSchema()
 # Show the first few rows of the DataFrame
 df.show()
 df_final.show()
+
+df_exploded= df_final.withColumn("nombre_exploded",explode("nombre"))
+df_exploded.show()
