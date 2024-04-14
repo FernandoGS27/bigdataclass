@@ -53,4 +53,4 @@ def unir_jsons(files):
 
 compras_jsons = unir_jsons(archivos)
 
-compras_jsons.summary().show()
+compras_jsons.show()
