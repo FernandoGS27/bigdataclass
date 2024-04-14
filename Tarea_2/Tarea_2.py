@@ -25,6 +25,8 @@ df_final = df_exploded.select(
 
 # Show the DataFrame schema
 df.printSchema()
+df_final.printSchema()
 
 # Show the first few rows of the DataFrame
 df.show()
+df_final.show()
