@@ -31,5 +31,8 @@ df_final.printSchema()
 df.show()
 df_final.show()
 
-df_exploded= df_final.withColumn("nombre_exploded",explode("nombre"))
-df_exploded.show()
+df_exploded_nombre= df_final.withColumn("Nombre",explode("nombre"))
+df_exploded_nombre.show()
+
+df_exploded_cantidad = df_exploded_nombre.withcolumn("Cantidad",explode("cantidad"))
+df_exploded_cantidad.show()
