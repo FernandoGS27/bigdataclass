@@ -48,9 +48,8 @@ def unir_jsons_compras(files):
 
     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in files]
     dfs_unidos = reduce(DataFrame.union,dfs)
-    dfs = dfs_unidos.withColumn("cantidad",col("cantidad").cast("int"))
-
-    return dfs
+    
+    return dfs_unidos
 
 compras_jsons = unir_jsons_compras(archivos)
 
@@ -68,7 +67,10 @@ def compras_jsons_a_dataframes(files):
     df_exploded_3 = df_exploded_2.withColumn("nueva", arrays_zip("nombre", "cantidad","precio_unitario")).withColumn("nueva", explode("nueva"))
     df_exploded_4 = df_exploded_3.select("numero_caja",col("nueva.nombre").alias("Nombre"), col("nueva.cantidad").alias("Cantidad"),col("nueva.precio_unitario").alias("Precio_Unitario"))
 
-    return df_exploded_4
+    dfs =  df_exploded_4.withColumn("Cantidad",col("Cantidad").cast("int"))
+    dfs = dfs.withColumn("Precio_Unitario"),col("Precio_Unitario").cast("float")
+
+    return dfs
 
 dataframes_jsons = compras_jsons_a_dataframes(compras_jsons)
 
@@ -78,10 +80,11 @@ dataframes_jsons.show()
 
 
 sumar_productos = dataframes_jsons.groupBy("Nombre").sum("Cantidad")
+sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad'))
 
 sumar_productos.show()
 
-#sumar_productos_2 = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad'))
+
 
     #return sumar_productos_2
 
