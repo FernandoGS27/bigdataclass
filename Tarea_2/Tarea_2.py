@@ -48,8 +48,9 @@ def unir_jsons_compras(files):
 
     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in files]
     dfs_unidos = reduce(DataFrame.union,dfs)
+    dfs = dfs_unidos.withColumn("cantidad",col("cantidad").cast("int"))
 
-    return dfs_unidos
+    return dfs
 
 compras_jsons = unir_jsons_compras(archivos)
 
