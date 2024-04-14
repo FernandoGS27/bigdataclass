@@ -75,11 +75,14 @@ dataframes_jsons.summary().show()
 dataframes_jsons.printSchema()
 dataframes_jsons.show()
 
-def total_productos(df):
-    sumar_productos = df.groupBy("Nombre").sum()
-    sumar_productos_2 = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad'))
 
-    return sumar_productos_2
+sumar_productos = dataframes_jsons.groupBy("Nombre").sum()
 
-test_1 = total_productos(dataframes_jsons)
-test_1.show()
+sumar_productos.show()
+
+#sumar_productos_2 = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad'))
+
+    #return sumar_productos_2
+
+# test_1 = total_productos(dataframes_jsons)
+# test_1.show()
