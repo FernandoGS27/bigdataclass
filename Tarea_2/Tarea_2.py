@@ -43,3 +43,14 @@ df_exploded_2 = df_final.withColumn("nueva", arrays_zip("nombre", "cantidad","pr
 df_exploded_2.printSchema()
 df_exploded_2.show()
 df_exploded_2.summary().show()
+
+def unir_jsons(files):
+
+    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in files]
+    dfs_unidos = reduce(DataFrame.union,dfs)
+
+    return dfs_unidos
+
+compras_jsons = unir_jsons(archivos)
+
+compras_jsons.summary().show()
