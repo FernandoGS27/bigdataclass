@@ -27,18 +27,10 @@ df_final = df_exploded.select(
 df.printSchema()
 df_final.printSchema()
 
-# Show the first few rows of the DataFrame
-df.show()
-df_final.show()
-
-df_exploded_nombre= df_final.withColumn("Nombre",explode("nombre"))
-df_exploded_nombre.show()
-
-df_exploded_cantidad = df_exploded_nombre.withColumn("Cantidad",explode("cantidad"))
-df_exploded_cantidad.show()
-
 
 df_exploded_2 = df_final.withColumn("new", arrays_zip("nombre", "cantidad","precio_unitario"))\
 .withColumn("new", explode("new"))\
 .select(col("new.nombre").alias("Nombre"), col("new.cantidad").alias("cantidad"),col("new.precio_unitario").alias("Precio_Unitario"))
+
+df_exploded_2.printSchema()
 df_exploded_2.show()
