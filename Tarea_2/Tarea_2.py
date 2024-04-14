@@ -20,20 +20,19 @@ dfs_unidos = reduce(DataFrame.union,dfs)
 
 dfs_unidos.show()
 
-df = spark.read.option("multiline","true").json("compras_1.json")
+#df = spark.read.option("multiline","true").json("compras_1.json")
 
-df_exploded = df.select("numero_caja",explode("compras").alias("compra"))
+dfs_exploded = dfs_unidos.select("numero_caja",explode("compras").alias("compra"))
 
 # Select columns "nombre", "cantidad", and "precio_unitario"
-df_final = df_exploded.select("numero_caja",
-    df_exploded["compra.nombre"].alias("nombre"),
-    df_exploded["compra.cantidad"].alias("cantidad"),
-    df_exploded["compra.precio_unitario"].alias("precio_unitario")
+df_final = dfs_exploded.select("numero_caja",
+    dfs_exploded["compra.nombre"].alias("nombre"),
+    dfs_exploded["compra.cantidad"].alias("cantidad"),
+    dfs_exploded["compra.precio_unitario"].alias("precio_unitario")
 )
 
 
 # Show the DataFrame schema
-df.printSchema()
 df_final.printSchema()
 
 
