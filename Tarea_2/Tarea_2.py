@@ -13,7 +13,7 @@ spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
 df = spark.read.option("multiline","true").json("compras_1.json")
 
-df_exploded = df.select(explode("compras").alias("compra"))
+df_exploded = df.select("numero_caja",explode("compras").alias("compra"))
 
 # Select columns "nombre", "cantidad", and "precio_unitario"
 df_final = df_exploded.select("numero_caja",
