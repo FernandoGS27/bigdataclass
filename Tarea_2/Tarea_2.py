@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
-from pyspark.sql.functions import explode as F
+from pyspark.sql.functions import explode, arrays_zip
 
 spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
@@ -13,7 +13,7 @@ spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
 df = spark.read.option("multiline","true").json("compras_1.json")
 
-df_exploded = df.select(F.explode("compras").alias("compra"))
+df_exploded = df.select(explode("compras").alias("compra"))
 
 # Select columns "nombre", "cantidad", and "precio_unitario"
 df_final = df_exploded.select(
@@ -31,14 +31,14 @@ df_final.printSchema()
 df.show()
 df_final.show()
 
-df_exploded_nombre= df_final.withColumn("Nombre",F.explode("nombre"))
+df_exploded_nombre= df_final.withColumn("Nombre",explode("nombre"))
 df_exploded_nombre.show()
 
-df_exploded_cantidad = df_exploded_nombre.withColumn("Cantidad",F.explode("cantidad"))
+df_exploded_cantidad = df_exploded_nombre.withColumn("Cantidad",explode("cantidad"))
 df_exploded_cantidad.show()
 
 
-df_exploded_2 = df_final.withColumn("new", F.arrays_zip("nombre", "cantidad","precio_unitario"))\
-       .withColumn("new", F.explode("new"))\
-       .select( F.col("new.nombre").alias("Nombre"), F.col("new.cantidad").alias("cantidad"),F.col("new.precio_unitario").alias("Precio_Unitario"))
-df_exploded_2.show()
+# df_exploded_2 = df_final.withColumn("new", F.arrays_zip("nombre", "cantidad","precio_unitario"))\
+#        .withColumn("new", explode("new"))\
+#        .select(col("new.nombre").alias("Nombre"), col("new.cantidad").alias("cantidad"),col("new.precio_unitario").alias("Precio_Unitario"))
+# df_exploded_2.show()
