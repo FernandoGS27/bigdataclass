@@ -76,7 +76,7 @@ dataframes_jsons.printSchema()
 dataframes_jsons.show()
 
 
-sumar_productos = dataframes_jsons.groupBy("Nombre").sum()
+sumar_productos = dataframes_jsons.groupBy("Nombre").sum("Cantidad")
 
 sumar_productos.show()
 
