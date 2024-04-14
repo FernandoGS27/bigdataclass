@@ -28,9 +28,9 @@ df.printSchema()
 df_final.printSchema()
 
 
-df_exploded_2 = df_final.withColumn("new", arrays_zip("nombre", "cantidad","precio_unitario"))\
-.withColumn("new", explode("new"))\
-.select(col("new.nombre").alias("Nombre"), col("new.cantidad").alias("Cantidad"),col("new.precio_unitario").alias("Precio_Unitario"))
+df_exploded_2 = df_final.withColumn("nueva", arrays_zip("nombre", "cantidad","precio_unitario"))\
+.withColumn("nueva", explode("nueva"))\
+.select(col("nueva.nombre").alias("Nombre"), col("nueva.cantidad").alias("Cantidad"),col("nueva.precio_unitario").alias("Precio_Unitario"))
 
 df_exploded_2.printSchema()
 df_exploded_2.show()
