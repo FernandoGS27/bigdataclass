@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
-from pyspark.sql.functions import explode, arrays_zip
+from pyspark.sql.functions import col, explode, arrays_zip
 
 spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
@@ -38,7 +38,7 @@ df_exploded_cantidad = df_exploded_nombre.withColumn("Cantidad",explode("cantida
 df_exploded_cantidad.show()
 
 
-# df_exploded_2 = df_final.withColumn("new", F.arrays_zip("nombre", "cantidad","precio_unitario"))\
-#        .withColumn("new", explode("new"))\
-#        .select(col("new.nombre").alias("Nombre"), col("new.cantidad").alias("cantidad"),col("new.precio_unitario").alias("Precio_Unitario"))
-# df_exploded_2.show()
+df_exploded_2 = df_final.withColumn("new", arrays_zip("nombre", "cantidad","precio_unitario"))\
+.withColumn("new", explode("new"))\
+.select(col("new.nombre").alias("Nombre"), col("new.cantidad").alias("cantidad"),col("new.precio_unitario").alias("Precio_Unitario"))
+df_exploded_2.show()
