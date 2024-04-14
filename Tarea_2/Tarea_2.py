@@ -38,7 +38,7 @@ df_exploded_cantidad = df_exploded_nombre.withColumn("Cantidad",F.explode("canti
 df_exploded_cantidad.show()
 
 
-df_exploded = df_final.withColumn("new", F.arrays_zip("nombre", "cantidad","precio_unitario"))\
+df_exploded_2 = df_final.withColumn("new", F.arrays_zip("nombre", "cantidad","precio_unitario"))\
        .withColumn("new", F.explode("new"))\
        .select( F.col("new.nombre").alias("Nombre"), F.col("new.cantidad").alias("cantidad"),F.col("new.precio_unitario").alias("Precio_Unitario"))
-df_exploded.show()
+df_exploded_2.show()
