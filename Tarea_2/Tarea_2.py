@@ -1,7 +1,8 @@
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
 from pyspark.sql.functions import col, explode, arrays_zip
+from functools import reduce
 
 spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
@@ -10,6 +11,14 @@ spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 #     StructField("cantidad", IntegerType(), True),
 #     StructField("precio_unitario", FloatType(), True)
 # ])
+
+archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
+
+dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
+
+dfs_unidos = reduce(DataFrame.union,dfs)
+
+dfs_unidos.show()
 
 df = spark.read.option("multiline","true").json("compras_1.json")
 
