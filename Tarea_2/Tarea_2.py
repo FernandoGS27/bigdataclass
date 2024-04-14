@@ -44,13 +44,30 @@ df_exploded_2.printSchema()
 df_exploded_2.show()
 df_exploded_2.summary().show()
 
-def unir_jsons(files):
+def unir_jsons_compras(files):
 
     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in files]
     dfs_unidos = reduce(DataFrame.union,dfs)
 
     return dfs_unidos
 
-compras_jsons = unir_jsons(archivos)
+compras_jsons = unir_jsons_compras(archivos)
 
 compras_jsons.show()
+
+def compras_jsons_a_dataframes(files):
+
+    dfs_exploded = files.select("numero_caja",explode("compras").alias("compra"))
+
+    df_exploded_2 = dfs_exploded.select("numero_caja",
+    dfs_exploded["compra.nombre"].alias("nombre"),
+    dfs_exploded["compra.cantidad"].alias("cantidad"),
+    dfs_exploded["compra.precio_unitario"].alias("precio_unitario"))
+
+    df_exploded_3 = df_exploded_2.withColumn("nueva", arrays_zip("nombre", "cantidad","precio_unitario")).withColumn("nueva", explode("nueva"))
+    df_exploded_4 = df_exploded_3.select("numero_caja",col("nueva.nombre").alias("Nombre"), col("nueva.cantidad").alias("Cantidad"),col("nueva.precio_unitario").alias("Precio_Unitario"))
+
+    return df_exploded_4
+
+dataframes_jsons = compras_jsons_a_dataframes(compras_jsons)
+dataframes_jsons.summary().show()
