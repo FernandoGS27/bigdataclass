@@ -85,7 +85,7 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     return df_metricas, df_metricas_csv
 
 metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
-
+test_metricas = metricas.write.csv("metricas.csv",header=True,mode="overwrite")
 metricas.show()
 
 
