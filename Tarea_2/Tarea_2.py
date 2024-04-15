@@ -80,9 +80,9 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
                                 ("percentil_50_por_caja",percentil_50),("percentil_75_por_caja",percentil_75),("producto_mas_vendido_por_unidad",producto_mas_vendido),\
                                     ("producto_de_mayor_ingreso",producto_mayor_ingreso)],["Tipo_de_Metrica","Valor"])
     
-    df_metricas_csv = df_metricas.write.csv("Tarea_2/metricas.csv",header=True,mode="overwrite")
+    #df_metricas_csv = df_metricas.write.csv("Tarea_2/metricas.csv",header=True,mode="overwrite")
     
-    return df_metricas_csv
+    return df_metricas
 
 metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
 metricas_test= metricas.write.csv("Tarea_2/metricas.csv",header=True,mode="overwrite")
