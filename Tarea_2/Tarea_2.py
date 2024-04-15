@@ -99,9 +99,9 @@ def total_cajas(df):
 total_vendido = total_cajas(dataframes_jsons)
 total_vendido.show()
 
-max_total_vendido=total_vendido.select(max(col("Total_Vendido"))).collect()[0][0]
-caja_mas_ventas = max_total_vendido.filter(total_vendido.Total_Vendido==max_total_vendido).select("numero_caja").collect()[0][0]
-print(caja_mas_ventas)
+max_total_vendido=total_vendido.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
+
+print(max_total_vendido)
 
 
 
