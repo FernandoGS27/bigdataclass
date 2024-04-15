@@ -79,7 +79,10 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     df_metricas = spark.createDataFrame([("caja_con_mas_ventas",caja_mas_ventas),("caja_con_menos_ventas",caja_menos_ventas),("percentil_25_por_caja",percentil_25),\
                                 ("percentil_50_por_caja",percentil_50),("percentil_75_por_caja",percentil_75),("producto_mas_vendido_por_unidad",producto_mas_vendido),\
                                     ("producto_de_mayor_ingreso",producto_mayor_ingreso)],["Tipo_de_Metrica","Valor"])
-    return df_metricas
+    
+    df_metricas_csv = df_metricas.write.csv("metricas.csv",header=True,mode="overwrite")
+    
+    return df_metricas, df_metricas_csv
 
 metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
 
