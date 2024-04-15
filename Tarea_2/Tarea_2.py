@@ -3,6 +3,7 @@ from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
 from pyspark.sql.functions import col, explode, arrays_zip
 from functools import reduce
+import pandas as pd
 
 spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
@@ -85,8 +86,8 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     return df_metricas
 
 metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
-metricas_1 = metricas.coalesce(1)
-metricas_test= metricas_1.write.csv("metricas.csv",header=True,mode="overwrite")
+pandas_metricas = metricas.toPandas()
+metricas_test= pandas_metricas.to_csv("metricas.csv",header=True,mode="overwrite")
 #metricas.show()
 
 
