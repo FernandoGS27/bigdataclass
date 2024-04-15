@@ -80,13 +80,24 @@ dataframes_jsons.show()
 
 
 def total_productos(df):
-    sumar_productos = dataframes_jsons.groupBy("Nombre").sum("Cantidad")
-    sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad'))
+    sumar_productos = df.groupBy("Nombre").sum("Cantidad")
+    sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad_Total'))
 
     return sumar_productos
-
-
 
 productos = total_productos(dataframes_jsons)
 
 productos.show()
+
+def total_cajas(df):
+    sumar_total_cajas = df.groupBy("numero_caja").sum("Precio_Unitario")
+    sumar_total_cajas = sumar_total_cajas.select(col("numero_caja"),col('sum(Precio_Unitario)').alias('Total_Vendido'))
+
+    return total_cajas
+
+total_vendido = total_cajas(dataframes_jsons)
+total_vendido.show()
+
+
+
+
