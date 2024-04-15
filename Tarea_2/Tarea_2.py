@@ -129,6 +129,29 @@ ingreso_por_producto.show()
 
 df_metricas.show()
 
+def calcular_metricas(df_jsons,df_ventas,df_producto):
+    caja_mas_ventas = df_ventas.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
+    caja_menos_ventas = df_ventas.orderBy(col("Total_Vendido").asc()).select("numero_caja").first()[0]
+    percentil_25 = df_ventas.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.25],0.01)[0]
+    percentil_50 = df_ventas.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.50],0.01)[0]
+    percentil_75 = df_ventas.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.75],0.01)[0]
+    producto_mas_vendido = df_producto.orderBy(col("Cantidad_Total").desc()).select("Nombre").first()[0]
+
+    ingreso_por_compra = df_jsons.withColumn("ingreso_por_compra", col("Cantidad")*col("Precio_Unitario"))
+    ingreso_por_producto = ingreso_por_compra.groupBy("Nombre").sum("ingreso_por_compra")
+    ingreso_por_producto = ingreso_por_producto.select(col("Nombre"),col("sum(ingreso_por_compra)").alias("Ingreso_por_compra"))
+    producto_mayor_ingreso = ingreso_por_producto.orderBy(col("Ingreso_por_compra").desc()).select("Nombre").first()[0]
+
+    df_metricas = spark.createDataFrame([("caja_con_mas_ventas",caja_mas_ventas),("caja_con_menos_ventas",caja_menos_ventas),("percentil_25_por_caja",percentil_25),\
+                                ("percentil_50_por_caja",percentil_50),("percentil_75_por_caja",percentil_75),("producto_mas_vendido_por_unidad",producto_mas_vendido),\
+                                    ("producto_de_mayor_ingreso",producto_mayor_ingreso)],["Tipo_de_Metrica","Valor"])
+    return df_metricas
+
+metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
+
+metricas.show()
+
+
 
 
 
