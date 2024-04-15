@@ -104,12 +104,14 @@ caja_menos_ventas=total_vendido.orderBy(col("Total_Vendido").asc()).select("nume
 percentil_25 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.25],0.01)[0]
 percentil_50 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.50],0.01)[0]
 percentil_75 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.75],0.01)[0]
+producto_mas_vendido = productos.orderBy(col("Cantidad_Total").desc()).select("Nombre").first()[0]
 
 print(caja_mas_ventas)
 print(caja_menos_ventas)
 print(percentil_25)
 print(percentil_50)
 print(percentil_75)
+print(producto_mas_vendido)
 
 
 
