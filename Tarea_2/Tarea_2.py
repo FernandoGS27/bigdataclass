@@ -119,7 +119,8 @@ print(percentil_75)
 print(producto_mas_vendido)
 ingreso_por_compra.show()
 ingreso_por_producto.show()
-print(producto_mayor_ingreso)
+producto_mayor_ingreso.show()
+
 
 
 
