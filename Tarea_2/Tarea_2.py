@@ -107,6 +107,9 @@ percentil_75 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile(
 producto_mas_vendido = productos.orderBy(col("Cantidad_Total").desc()).select("Nombre").first()[0]
 
 ingreso_por_compra = dataframes_jsons.withColumn("ingreso_por_compra", col("Cantidad")*col("Precio_Unitario"))
+ingreso_por_producto = ingreso_por_compra.groupBy("Nombre").sum("ingreso_por_compra")
+ingreso_por_producto = ingreso_por_producto.select(col("Nombre"),col("sum(ingreso_por_compra)").alias("Ingreso_por_compra"))
+producto_mayor_ingreso = ingreso_por_producto.orderBy(col("Ingreso_por_compra").desc()).select("Nombre").first()[0]
 
 print(caja_mas_ventas)
 print(caja_menos_ventas)
@@ -115,6 +118,8 @@ print(percentil_50)
 print(percentil_75)
 print(producto_mas_vendido)
 ingreso_por_compra.show()
+ingreso_por_producto.show()
+print(producto_mayor_ingreso)
 
 
 
