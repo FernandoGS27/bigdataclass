@@ -3,7 +3,7 @@ from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
 from pyspark.sql.functions import col, explode, arrays_zip
 from functools import reduce
-import pandas as pd
+#import pandas as pd
 
 spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
