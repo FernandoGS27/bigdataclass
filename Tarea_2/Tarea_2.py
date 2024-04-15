@@ -6,43 +6,7 @@ from functools import reduce
 
 spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
-# schema = StructType([
-#     StructField("nombre", StringType(), True),
-#     StructField("cantidad", IntegerType(), True),
-#     StructField("precio_unitario", FloatType(), True)
-# ])
-
 archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
-
-# dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
-
-# dfs_unidos = reduce(DataFrame.union,dfs)
-
-# dfs_unidos.show()
-
-#df = spark.read.option("multiline","true").json("compras_1.json")
-
-# dfs_exploded = dfs_unidos.select("numero_caja",explode("compras").alias("compra"))
-
-# # Select columns "nombre", "cantidad", and "precio_unitario"
-# df_final = dfs_exploded.select("numero_caja",
-#     dfs_exploded["compra.nombre"].alias("nombre"),
-#     dfs_exploded["compra.cantidad"].alias("cantidad"),
-#     dfs_exploded["compra.precio_unitario"].alias("precio_unitario")
-# )
-
-
-# Show the DataFrame schema
-# df_final.printSchema()
-
-
-# df_exploded_2 = df_final.withColumn("nueva", arrays_zip("nombre", "cantidad","precio_unitario"))\
-# .withColumn("nueva", explode("nueva"))\
-# .select("numero_caja",col("nueva.nombre").alias("Nombre"), col("nueva.cantidad").alias("Cantidad"),col("nueva.precio_unitario").alias("Precio_Unitario"))
-
-# df_exploded_2.printSchema()
-# df_exploded_2.show()
-# df_exploded_2.summary().show()
 
 def unir_jsons_compras(files):
 
@@ -98,36 +62,6 @@ def total_cajas(df):
 
 total_vendido = total_cajas(dataframes_jsons)
 total_vendido.show()
-
-caja_mas_ventas=total_vendido.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
-caja_menos_ventas=total_vendido.orderBy(col("Total_Vendido").asc()).select("numero_caja").first()[0]
-percentil_25 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.25],0.01)[0]
-percentil_50 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.50],0.01)[0]
-percentil_75 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.75],0.01)[0]
-producto_mas_vendido = productos.orderBy(col("Cantidad_Total").desc()).select("Nombre").first()[0]
-
-ingreso_por_compra = dataframes_jsons.withColumn("ingreso_por_compra", col("Cantidad")*col("Precio_Unitario"))
-ingreso_por_producto = ingreso_por_compra.groupBy("Nombre").sum("ingreso_por_compra")
-ingreso_por_producto = ingreso_por_producto.select(col("Nombre"),col("sum(ingreso_por_compra)").alias("Ingreso_por_compra"))
-producto_mayor_ingreso = ingreso_por_producto.orderBy(col("Ingreso_por_compra").desc()).select("Nombre").first()[0]
-
-df_metricas = spark.createDataFrame([("caja_con_mas_ventas",caja_mas_ventas),("caja_con_menos_ventas",caja_menos_ventas),("percentil_25_por_caja",percentil_25),\
-                            ("percentil_50_por_caja",percentil_50),("percentil_75_por_caja",percentil_75),("producto_mas_vendido_por_unidad",producto_mas_vendido),\
-                                ("producto_de_mayor_ingreso",producto_mayor_ingreso)],["Tipo_de_Metrica","Valor"])
-
-print(caja_mas_ventas)
-print(caja_menos_ventas)
-print(percentil_25)
-print(percentil_50)
-print(percentil_75)
-print(producto_mas_vendido)
-print(producto_mayor_ingreso)
-
-ingreso_por_compra.show()
-ingreso_por_producto.show()
-
-
-df_metricas.show()
 
 def calcular_metricas(df_jsons,df_ventas,df_producto):
     caja_mas_ventas = df_ventas.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
