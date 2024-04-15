@@ -90,10 +90,11 @@ productos = total_productos(dataframes_jsons)
 productos.show()
 
 def total_cajas(df):
+
     sumar_total_cajas = df.groupBy("numero_caja").sum("Precio_Unitario")
     sumar_total_cajas = sumar_total_cajas.select(col("numero_caja"),col('sum(Precio_Unitario)').alias('Total_Vendido'))
 
-    return total_cajas
+    return sumar_total_cajas
 
 total_vendido = total_cajas(dataframes_jsons)
 total_vendido.show()
