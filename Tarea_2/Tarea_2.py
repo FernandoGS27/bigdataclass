@@ -125,7 +125,7 @@ print(producto_mayor_ingreso)
 
 ingreso_por_compra.show()
 ingreso_por_producto.show()
-producto_mayor_ingreso.show()
+
 
 df_metricas.show()
 
