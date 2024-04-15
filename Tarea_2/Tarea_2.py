@@ -106,12 +106,15 @@ percentil_50 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile(
 percentil_75 = total_vendido.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.75],0.01)[0]
 producto_mas_vendido = productos.orderBy(col("Cantidad_Total").desc()).select("Nombre").first()[0]
 
+ingreso_por_compra = dataframes_jsons.withColumn("ingreso_por_compra", col("Cantidad")*col("Precio_Unitario"))
+
 print(caja_mas_ventas)
 print(caja_menos_ventas)
 print(percentil_25)
 print(percentil_50)
 print(percentil_75)
 print(producto_mas_vendido)
+ingreso_por_compra.show()
 
 
 
