@@ -85,7 +85,7 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     return df_metricas
 
 metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
-metricas.repartition(1).write.csv("metricas",header=True, mode="overwrite")
+metricas.coalesce(1).write.option("header","true").csv("bigdataclass/Tarea_2/"+"metricas")
 
 #metricas.coalesce(1).write.format("csv").option("header", "true").save("metricas.csv")
 
