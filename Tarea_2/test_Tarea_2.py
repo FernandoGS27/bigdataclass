@@ -21,7 +21,7 @@ def test_total_cajas(spark_session):
 
     actual_ds = total_cajas(cajas_ds)
 
-    expected_ds = spark_session.createDataFrame([('A',200),('B',500),('D',2000),('C',600),('E',1400)],\
+    expected_ds = spark_session.createDataFrame([(1,600),(2,1700),(3,2000),(3,600),(4,500)],\
                                                  ['numero_caja','Total_Vendido'])
 
     actual_ds.show()
