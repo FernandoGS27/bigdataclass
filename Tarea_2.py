@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     # Load JSON files into DataFrame
     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
-    compras_jsons = reduce(DataFrame.union,dfs)
+    #compras_jsons = reduce(DataFrame.union,dfs)
 
 
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
 # compras_jsons = unir_jsons_compras(archivos)
 
-compras_jsons.show()
+#compras_jsons.show()
 
 def compras_jsons_a_dataframes(files):
 
