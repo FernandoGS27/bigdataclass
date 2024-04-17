@@ -6,42 +6,22 @@ from functools import reduce
 import sys
 import glob
 
-# spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
-
-if __name__ == "__main__":
-    # Check if the correct number of arguments is provided
-    if len(sys.argv) < 2:
-        print("Usage: spark-submit Tarea_2.py <json_files>")
-        sys.exit(1)
-
-    # Initialize SparkSession
-    spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
-
-
-    # Get list of JSON files from command-line arguments
-    archivos = []
-    for pattern in sys.argv[1:]:
-        archivos.extend(glob.glob(pattern))
-
-    # Load JSON files into DataFrame
-    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
-    # compras_jsons = reduce(DataFrame.union,dfs)
-    dfs.show()
+spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
 
 
-#archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
+archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
 
-# def unir_jsons_compras(files):
+def unir_jsons_compras(files):
 
-#     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in files]
-#     dfs_unidos = reduce(DataFrame.union,dfs)
+    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in files]
+    dfs_unidos = reduce(DataFrame.union,dfs)
     
-#     return dfs_unidos
+    return dfs_unidos
 
-# compras_jsons = unir_jsons_compras(archivos)
+compras_jsons = unir_jsons_compras(archivos)
 
-#compras_jsons.show()
+compras_jsons.show()
 
 def compras_jsons_a_dataframes(files):
 
