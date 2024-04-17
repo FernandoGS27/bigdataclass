@@ -12,6 +12,6 @@ def test_total_productos(spark_session):
     actual_ds.show()
     expected_ds.show()
 
-    assert actual_ds.collect == expected_ds.collect()
+    assert actual_ds.collect() == expected_ds.collect()
 
     
