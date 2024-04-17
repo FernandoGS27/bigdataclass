@@ -10,23 +10,19 @@ import glob
 
 if __name__ == "__main__":
     # Check if the correct number of arguments is provided
-    if len(sys.argv) < 2:
-        print("Usage: spark-submit Tarea_2.py <json_files>")
+    if len(sys.argv) > 1 and all([exists(file) for file in sys.argv[1:]]):
+        archivos = sys.argv[1:]
+        spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
         sys.exit(1)
+    else:
+        print("Se debe proporcionar al menos un archivo")
 
-    # Initialize SparkSession
-    spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
+    
 
-
-    # Get list of JSON files from command-line arguments
-    archivos = []
-    for pattern in sys.argv[1:]:
-        archivos.extend(glob.glob(pattern))
-
-    # Load JSON files into DataFrame
-    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
-    #compras_jsons = reduce(DataFrame.union,dfs)
-    dfs.show()
+# Load JSON files into DataFrame
+dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
+#compras_jsons = reduce(DataFrame.union,dfs)
+dfs.show()
 
 
 #archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
