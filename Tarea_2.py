@@ -19,11 +19,13 @@ if __name__ == "__main__":
     print(sys.argv)
 
     # Get list of JSON files from command-line arguments
-    json_files = glob.glob(sys.argv[1])
+    archivos = []
+    for pattern in sys.argv[1:]:
+        archivos.extend(glob.glob(pattern))
 
-    print(json_files)
+    print(archivos)
     # Load JSON files into DataFrame
-    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in json_files]
+    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
     compras_jsons = reduce(DataFrame.union,dfs)
     compras_jsons.show()
     #dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
