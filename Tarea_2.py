@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
-from pyspark.sql.functions import col, explode, arrays_zip
+from pyspark.sql.functions import col, explode, arrays_zip, exists
 from functools import reduce
 import sys
 import glob
