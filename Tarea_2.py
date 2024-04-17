@@ -19,7 +19,7 @@ if __name__ == "__main__":
     print(sys.argv[1])
 
     # Get list of JSON files from command-line arguments
-    json_files = glob(sys.argv[1])
+    json_files = glob.glob(sys.argv[1])
 
     print(json_files)
     # Load JSON files into DataFrame
