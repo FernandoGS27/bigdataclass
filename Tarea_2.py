@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     # Initialize SparkSession
     spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
-    print(sys.argv)
+    print(sys.argv[1])
 
     # Get list of JSON files from command-line arguments
     json_files = glob.glob(sys.argv[1])
