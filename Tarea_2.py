@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # Load JSON files into DataFrame
     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
     #compras_jsons = reduce(DataFrame.union,dfs)
-
+    dfs.show()
 
 
 #archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
