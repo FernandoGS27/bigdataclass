@@ -4,6 +4,8 @@ cajas_data = [(1,"A",4,100), (1,"B",3,200),(1,"C",2,200),(2,"D",1,1000), (2,"E",
 cajas_ds = spark.createDataFrame(cajas_data, ['numero_caja','Nombre','Cantidad','Precio_Unitario'])
 actual_ds = total_productos(cajas_ds)
 
+actual_ds.show()
+
 
 
 # def test_total_productos(spark_session):
