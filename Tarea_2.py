@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.types import (DateType, IntegerType, FloatType, StringType,
                                StructField, StructType, TimestampType)
-from pyspark.sql.functions import col, explode, arrays_zip, exists
+from pyspark.sql.functions import col, explode, arrays_zip
 from functools import reduce
 import sys
 import glob
@@ -10,19 +10,25 @@ import glob
 
 if __name__ == "__main__":
     # Check if the correct number of arguments is provided
-    if len(sys.argv) > 1 and all([exists(file) for file in sys.argv[1:]]):
-        archivos = sys.argv[1:]
-        spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
+    if len(sys.argv) < 2:
+        print("Usage: spark-submit Tarea_2.py <json_files>")
         sys.exit(1)
-    else:
-        print("Se debe proporcionar al menos un archivo")
 
-    
+    # Initialize SparkSession
+    spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
-# Load JSON files into DataFrame
-dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
-#compras_jsons = reduce(DataFrame.union,dfs)
-dfs.show()
+
+    # Get list of JSON files from command-line arguments
+    archivos = []
+    for pattern in sys.argv[1:]:
+        archivos.extend(glob.glob(pattern))
+
+    # Load JSON files into DataFrame
+    df = spark.read.json(archivos)
+    df.show()
+    #dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
+    #compras_jsons = reduce(DataFrame.union,dfs)
+
 
 
 #archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
