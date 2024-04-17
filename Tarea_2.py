@@ -59,11 +59,11 @@ def compras_jsons_a_dataframes(files):
 
     return dfs
 
-dataframes_jsons = compras_jsons_a_dataframes(compras_jsons)
+#dataframes_jsons = compras_jsons_a_dataframes(compras_jsons)
 
-dataframes_jsons.summary().show()
-dataframes_jsons.printSchema()
-dataframes_jsons.show()
+# dataframes_jsons.summary().show()
+# dataframes_jsons.printSchema()
+# dataframes_jsons.show()
 
 
 def total_productos(df):
@@ -107,7 +107,7 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     
     return df_metricas_csv
 
-metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
+#metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
 #metricas.repartition(1).write.csv("metricas",header=True, mode="overwrite")
 
 #metricas.coalesce(1).write.format("csv").option("header", "true").save("metricas.csv")
