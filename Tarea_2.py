@@ -72,9 +72,9 @@ def total_productos(df):
 
     return sumar_productos
 
-productos = total_productos(dataframes_jsons)
+#productos = total_productos(dataframes_jsons)
 
-productos.show()
+#productos.show()
 
 def total_cajas(df):
 
@@ -83,8 +83,8 @@ def total_cajas(df):
 
     return sumar_total_cajas
 
-total_vendido = total_cajas(dataframes_jsons)
-total_vendido.show()
+#total_vendido = total_cajas(dataframes_jsons)
+#total_vendido.show()
 
 def calcular_metricas(df_jsons,df_ventas,df_producto):
     caja_mas_ventas = df_ventas.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
