@@ -7,22 +7,18 @@ import sys
 import glob
 
 if __name__ == "__main__":
-    # Check if the correct number of arguments is provided
+   
     if len(sys.argv) < 2:
-        print("Usage: spark-submit Tarea_2.py <json_files>")
+        print("Ingreso al menos un archivo json: spark-submit Tarea_2.py <json_files>")
         sys.exit(1)
 
-    # Initialize SparkSession
     spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
     print(sys.argv)
 
-    # Get list of JSON files from command-line arguments
     archivos = []
     for pattern in sys.argv[1:]:
         archivos.extend(glob.glob(pattern))
-
-    print(archivos)
-    # Load JSON files into DataFrame
+  
     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
     compras_jsons = reduce(DataFrame.union,dfs)
     compras_jsons.show()
@@ -67,10 +63,13 @@ dataframes_jsons.show()
 
 
 def total_productos(df):
-    sumar_productos = df.groupBy("Nombre").sum("Cantidad")
-    sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad_Total'))
 
-    return sumar_productos
+    sumar_productos = df.groupBy("Nombre").sum("Cantidad")
+    df_sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad_Total'))
+
+    df_sumar_productos_csv = df_sumar_productos.repartition(1).write.csv("total_productos",header=True, mode="overwrite")
+
+    return df_sumar_productos_csv
 
 productos = total_productos(dataframes_jsons)
 
@@ -79,9 +78,11 @@ productos.show()
 def total_cajas(df):
 
     sumar_total_cajas = df.groupBy("numero_caja").sum("Precio_Unitario")
-    sumar_total_cajas = sumar_total_cajas.select(col("numero_caja"),col('sum(Precio_Unitario)').alias('Total_Vendido'))
+    df_sumar_total_cajas = sumar_total_cajas.select(col("numero_caja"),col('sum(Precio_Unitario)').alias('Total_Vendido'))
 
-    return sumar_total_cajas
+    df_sumar_total_cajas_csv = df_sumar_total_cajas.repartition(1).write.csv("total_cajas",header=True, mode="overwrite")
+
+    return df_sumar_total_cajas_csv
 
 total_vendido = total_cajas(dataframes_jsons)
 total_vendido.show()
