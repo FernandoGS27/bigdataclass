@@ -16,9 +16,9 @@ if __name__ == "__main__":
     spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
     print(sys.argv)
 
-    archivos = []
-    for pattern in sys.argv[1:]:
-        archivos.extend(glob.glob(pattern))
+archivos = []
+for pattern in sys.argv[1:]:
+    archivos.extend(glob.glob(pattern))
   
 dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
 compras_jsons = reduce(DataFrame.union,dfs)
