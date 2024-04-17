@@ -9,7 +9,7 @@ import glob
 if __name__ == "__main__":
    
     if len(sys.argv) < 2:
-        print("Ingreso al menos un archivo json: spark-submit Tarea_2.py <json_files>")
+        print("Ingrese al menos un archivo json: spark-submit Tarea_2.py <json_files>")
         sys.exit(1)
 
     spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
@@ -69,9 +69,10 @@ def total_productos(df):
 
     df_sumar_productos_csv = df_sumar_productos.repartition(1).write.csv("total_productos",header=True, mode="overwrite")
 
-    return df_sumar_productos_csv
+    return df_sumar_productos
 
 productos = total_productos(dataframes_jsons)
+productos.show()
 
 def total_cajas(df):
 
@@ -80,9 +81,10 @@ def total_cajas(df):
 
     df_sumar_total_cajas_csv = df_sumar_total_cajas.repartition(1).write.csv("total_cajas",header=True, mode="overwrite")
 
-    return df_sumar_total_cajas_csv
+    return df_sumar_total_cajas
 
 total_vendido = total_cajas(dataframes_jsons)
+total_vendido.show()
 
 def calcular_metricas(df_jsons,df_ventas,df_producto):
     caja_mas_ventas = df_ventas.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
