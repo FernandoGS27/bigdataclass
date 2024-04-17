@@ -1,0 +1,268 @@
+{
+	"numero_caja": "3",
+	"compras": [
+		[
+			{
+				"nombre": "cereal",
+				"cantidad": "3",
+				"precio_unitario": "4500"
+			},
+			{
+				"nombre": "desinfectante",
+				"cantidad": "2",
+				"precio_unitario": "3000"
+			}
+		],
+		[
+			{
+				"nombre": "melocoton",
+				"cantidad": "1",
+				"precio_unitario": "1000"
+			},
+			{
+				"nombre": "salchichas",
+				"cantidad": "2",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "jugo de naranja",
+				"cantidad": "1",
+				"precio_unitario": "3500"
+			},
+			{
+				"nombre": "desodorante",
+				"cantidad": "1",
+				"precio_unitario": "4000"
+			}
+		],
+		[
+			{
+				"nombre": "lechugas",
+				"cantidad": "3",
+				"precio_unitario": "3000"
+			},
+			{
+				"nombre": "salchichas",
+				"cantidad": "2",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "pasta de dientes",
+				"cantidad": "1",
+				"precio_unitario": "3500"
+			},
+			{
+				"nombre": "pepsi",
+				"cantidad": "1",
+				"precio_unitario": "4000"
+			},
+			{
+				"nombre": "sardinas",
+				"cantidad": "1",
+				"precio_unitario": "4000"
+			},
+			{
+				"nombre": "salmon",
+				"cantidad": "1",
+				"precio_unitario": "20000"
+			},
+			{
+				"nombre": "calamares",
+				"cantidad": "1",
+				"precio_unitario": "4000"
+			},
+			{
+				"nombre": "tocino",
+				"cantidad": "1",
+				"precio_unitario": "6000"
+			}
+		],
+		[
+			{
+				"nombre": "pepsi",
+				"cantidad": "3",
+				"precio_unitario": "4000"
+			},
+			{
+				"nombre": "salchichas",
+				"cantidad": "2",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "pasta de dientes",
+				"cantidad": "1",
+				"precio_unitario": "3500"
+			},
+			{
+				"nombre": "pan",
+				"cantidad": "1",
+				"precio_unitario": "3500"
+			},
+			{
+				"nombre": "papas",
+				"cantidad": "1",
+				"precio_unitario": "4500"
+			}
+		],
+		[
+			{
+				"nombre": "mayonesa",
+				"cantidad": "3",
+				"precio_unitario": "2000"
+			},
+			{
+				"nombre": "fresas",
+				"cantidad": "2",
+				"precio_unitario": "4500"
+			},
+			{
+				"nombre": "cervezas",
+				"cantidad": "1",
+				"precio_unitario": "6500"
+			},
+			{
+				"nombre": "esponjas",
+				"cantidad": "6",
+				"precio_unitario": "1500"
+			},
+			{
+				"nombre": "esparragos",
+				"cantidad": "1",
+				"precio_unitario": "4500"
+			}
+				
+		],
+		[
+			{
+				"nombre": "remolacha",
+				"cantidad": "3",
+				"precio_unitario": "1000"
+			},
+			{
+				"nombre": "salchichas",
+				"cantidad": "2",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "toallas",
+				"cantidad": "2",
+				"precio_unitario": "5500"
+			},
+			{
+				"nombre": "pan",
+				"cantidad": "1",
+				"precio_unitario": "3500"
+			},
+			{
+				"nombre": "garbanzos",
+				"cantidad": "1",
+				"precio_unitario": "4500"
+			},
+			{
+				"nombre": "salsa",
+				"cantidad": "3",
+				"precio_unitario": "1000"
+			}
+				
+		],
+		[
+		
+			{
+				"nombre": "mostaza",
+				"cantidad": "3",
+				"precio_unitario": "1500"
+			},
+			{
+				"nombre": "brocoli",
+				"cantidad": "2",
+				"precio_unitario": "33"
+			}
+		
+		],
+		[
+			{
+				"nombre": "salmon",
+				"cantidad": "3",
+				"precio_unitario": "20000"
+			},
+			{
+				"nombre": "barquillos",
+				"cantidad": "2",
+				"precio_unitario": "3500"
+			},
+			{
+				"nombre": "tortillas",
+				"cantidad": "1",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "pescado",
+				"cantidad": "1",
+				"precio_unitario": "6500"
+			},
+			{
+				"nombre": "crema",
+				"cantidad": "1",
+				"precio_unitario": "4500"
+			}
+				
+		],
+		[
+			{
+				"nombre": "cafe",
+				"cantidad": "1",
+				"precio_unitario": "7000"
+			},
+			{
+				"nombre": "jamon",
+				"cantidad": "4",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "pollo",
+				"cantidad": "1",
+				"precio_unitario": "5500"
+			},
+			{
+				"nombre": "jabon",
+				"cantidad": "2",
+				"precio_unitario": "4000"
+			}
+		
+		
+		],
+		[
+			{
+				"nombre": "lechugas",
+				"cantidad": "3",
+				"precio_unitario": "3000"
+			},
+			{
+				"nombre": "bananos",
+				"cantidad": "2",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "chocolate",
+				"cantidad": "1",
+				"precio_unitario": "3500"
+			},
+			{
+				"nombre": "tortillas",
+				"cantidad": "4",
+				"precio_unitario": "2500"
+			},
+			{
+				"nombre": "vasos",
+				"cantidad": "1",
+				"precio_unitario": "4500"
+			},
+			{
+				"nombre": "ciruelas",
+				"cantidad": "2",
+				"precio_unitario": "1000"
+			}	
+		
+		]
+	]
+}
