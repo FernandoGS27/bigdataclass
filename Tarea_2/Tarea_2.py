@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
 # compras_jsons = unir_jsons_compras(archivos)
 
-compras_jsons.show()
+#compras_jsons.show()
 
 def compras_jsons_a_dataframes(files):
 
