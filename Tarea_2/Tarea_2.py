@@ -89,9 +89,12 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     ingreso_por_producto = ingreso_por_producto.select(col("Nombre"),col("sum(ingreso_por_compra)").alias("Ingreso_por_compra"))
     producto_mayor_ingreso = ingreso_por_producto.orderBy(col("Ingreso_por_compra").desc()).select("Nombre").first()[0]
 
+    metricas_schema =StructType([StructField('Tipo_de_Metrica',StringType()),
+                                StructField('Valor',StringType())])
+
     df_metricas = spark.createDataFrame([("caja_con_mas_ventas",caja_mas_ventas),("caja_con_menos_ventas",caja_menos_ventas),("percentil_25_por_caja",percentil_25),\
                                 ("percentil_50_por_caja",percentil_50),("percentil_75_por_caja",percentil_75),("producto_mas_vendido_por_unidad",producto_mas_vendido),\
-                                    ("producto_de_mayor_ingreso",producto_mayor_ingreso)],["Tipo_de_Metrica","Valor"])
+                                    ("producto_de_mayor_ingreso",producto_mayor_ingreso)],metricas_schema)
     
     df_metricas_csv = df_metricas.repartition(1).write.csv("metricas",header=True, mode="overwrite")
     
