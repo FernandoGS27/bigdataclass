@@ -1,4 +1,4 @@
-from .Tarea_2 import  total_productos, total_cajas,calcular_metricas
+from .Tarea_2 import  total_productos
 
 def test_total_productos(spark_session):
     cajas_data = [(1,"A",4,100), (1,"B",3,200),(1,"C",2,200),(2,"D",1,1000), (2,"E",3,700), (3,"A",1,100),(3,"C",4,200),(3,"D",6,1000),(3,"E",3,700),(4,"B",2,300),(4,"C",4,200)]
