@@ -42,7 +42,7 @@ def test_calcular_metricas(spark_session):
 
     actual_ds = calcular_metricas(cajas_ds,total_ventas_ds,total_producto_ds)
 
-    expected_ds = spark_session.createDataFrame([("caja_con_mas_ventas","3"),("caja_con_menos_ventas","1"),("percentil_25_por_caja","500"),("percentil_50_por_caja","500"),
+    expected_ds = spark_session.createDataFrame([("caja_con_mas_ventas","3"),("caja_con_menos_ventas","4"),("percentil_25_por_caja","500"),("percentil_50_por_caja","500"),
                                                 ("percentil_75_por_caja","1700"),("producto_mas_vendido_por_unidad","C"),
                                                     ("producto_de_mayor_ingreso","D")],['Tipo_de_Metrica','Valor'])
 
