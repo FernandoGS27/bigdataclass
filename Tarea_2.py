@@ -16,14 +16,16 @@ if __name__ == "__main__":
 
     # Initialize SparkSession
     spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
-
+    print(sys.argv)
 
     # Get list of JSON files from command-line arguments
-    json_files = [arg for arg in sys.argv[1:] if arg.endswith('.json')]
+    archivos = []
+    for pattern in sys.argv[1:]:
+        archivos.extend(glob.glob(pattern))
 
-    print(json_files)
+    print(archivos)
     # Load JSON files into DataFrame
-    dfs = [spark.read.option("multiline", "true").json(archivo_json) for archivo_json in json_files]
+    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
     compras_jsons = reduce(DataFrame.union,dfs)
     dfs.show()
     #dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
