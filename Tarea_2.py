@@ -24,7 +24,7 @@ if __name__ == "__main__":
         archivos.extend(glob.glob(pattern))
 
     # Load JSON files into DataFrame
-    df = spark.read.json(archivos)
+    df = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
     df.show()
     #dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
     #compras_jsons = reduce(DataFrame.union,dfs)
