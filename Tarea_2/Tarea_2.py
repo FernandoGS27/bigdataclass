@@ -22,7 +22,7 @@ for pattern in sys.argv[1:]:
   
 dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
 compras_jsons = reduce(DataFrame.union,dfs)
-compras_jsons.show()
+#compras_jsons.show()
 
 def compras_jsons_a_dataframes(files):
 
