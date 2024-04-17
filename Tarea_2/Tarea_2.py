@@ -23,21 +23,6 @@ if __name__ == "__main__":
     compras_jsons = reduce(DataFrame.union,dfs)
     compras_jsons.show()
 
-#spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
-
-#archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
-
-# def unir_jsons_compras(files):
-
-#     dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in files]
-#     dfs_unidos = reduce(DataFrame.union,dfs)
-    
-#     return dfs_unidos
-
-# compras_jsons = unir_jsons_compras(archivos)
-
-# compras_jsons.show()
-
 def compras_jsons_a_dataframes(files):
 
     dfs_exploded = files.select("numero_caja",explode("compras").alias("compra"))
@@ -105,14 +90,10 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     
     df_metricas_csv = df_metricas.repartition(1).write.csv("metricas",header=True, mode="overwrite")
     
-    return df_metricas_csv
+    return df_metricas
 
 metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
-#metricas.repartition(1).write.csv("metricas",header=True, mode="overwrite")
-
-#metricas.coalesce(1).write.format("csv").option("header", "true").save("metricas.csv")
-
-#metricas.show()
+metricas.show()
 
 
 
