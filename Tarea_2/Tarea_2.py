@@ -6,6 +6,8 @@ from functools import reduce
 import sys
 import glob
 
+spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
+
 if __name__ == "__main__":
    
     if len(sys.argv) < 2:
@@ -72,6 +74,7 @@ total_vendido = total_cajas(dataframes_jsons)
 total_vendido.show()
 
 def calcular_metricas(df_jsons,df_ventas,df_producto):
+
     caja_mas_ventas = df_ventas.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
     caja_menos_ventas = df_ventas.orderBy(col("Total_Vendido").asc()).select("numero_caja").first()[0]
     percentil_25 = df_ventas.orderBy(col("Total_Vendido").asc()).approxQuantile("Total_Vendido",[0.25],0.01)[0]
