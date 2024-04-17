@@ -13,8 +13,8 @@ if __name__ == "__main__":
         print("Ingrese al menos un archivo json: spark-submit Tarea_2.py <json_files>")
         sys.exit(1)
 
-    spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
-    print(sys.argv)
+spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
+print(sys.argv)
 
 archivos = []
 for pattern in sys.argv[1:]:
