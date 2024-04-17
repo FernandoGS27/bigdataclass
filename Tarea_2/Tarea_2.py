@@ -67,13 +67,11 @@ def total_productos(df):
     sumar_productos = df.groupBy("Nombre").sum("Cantidad")
     df_sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad_Total'))
 
-    #df_sumar_productos_csv = df_sumar_productos.repartition(1).write.csv("total_productos",header=True, mode="overwrite")
+    df_sumar_productos_csv = df_sumar_productos.repartition(1).write.csv("total_productos",header=True, mode="overwrite")
 
-    return df_sumar_productos
+    return df_sumar_productos_csv
 
 productos = total_productos(dataframes_jsons)
-
-productos.show()
 
 def total_cajas(df):
 
@@ -85,7 +83,6 @@ def total_cajas(df):
     return df_sumar_total_cajas_csv
 
 total_vendido = total_cajas(dataframes_jsons)
-total_vendido.show()
 
 def calcular_metricas(df_jsons,df_ventas,df_producto):
     caja_mas_ventas = df_ventas.orderBy(col("Total_Vendido").desc()).select("numero_caja").first()[0]
