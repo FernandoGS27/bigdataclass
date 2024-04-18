@@ -6,9 +6,7 @@ from functools import reduce
 import sys
 import glob
 
-#spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
-
-# archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
+spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
  
 if __name__ == "__main__":
    
@@ -16,7 +14,7 @@ if __name__ == "__main__":
         print("Ingrese al menos un archivo json: spark-submit Tarea_2.py <json_files>")
         sys.exit(1)
     else:    
-        spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
+        
         print(sys.argv)
 
     archivos = []
