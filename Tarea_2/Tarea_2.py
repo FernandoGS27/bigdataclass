@@ -44,11 +44,13 @@ def compras_jsons_a_dataframes(files):
 
     return dfs
 
-dataframes_jsons = compras_jsons_a_dataframes(compras_jsons)
+if __name__ == "__main__":
 
-dataframes_jsons.summary().show()
-dataframes_jsons.printSchema()
-dataframes_jsons.show()
+    dataframes_jsons = compras_jsons_a_dataframes(compras_jsons)
+
+    dataframes_jsons.summary().show()
+    dataframes_jsons.printSchema()
+    dataframes_jsons.show()
 
 
 def total_productos(df):
@@ -60,8 +62,10 @@ def total_productos(df):
 
     return df_sumar_productos
 
-productos = total_productos(dataframes_jsons)
-productos.show()
+if __name__ == "__main__":
+
+    productos = total_productos(dataframes_jsons)
+    productos.show()
 
 def total_cajas(df):
 
@@ -72,8 +76,10 @@ def total_cajas(df):
 
     return df_sumar_total_cajas
 
-total_vendido = total_cajas(dataframes_jsons)
-total_vendido.show()
+if __name__ == "__main__":
+
+    total_vendido = total_cajas(dataframes_jsons)
+    total_vendido.show()
 
 def calcular_metricas(df_jsons,df_ventas,df_producto):
 
@@ -100,8 +106,10 @@ def calcular_metricas(df_jsons,df_ventas,df_producto):
     
     return df_metricas
 
-metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
-metricas.show()
+if __name__ == "__main__":
+
+    metricas = calcular_metricas(dataframes_jsons,total_vendido,productos)
+    metricas.show()
 
 
 
