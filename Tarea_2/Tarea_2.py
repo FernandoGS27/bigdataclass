@@ -6,7 +6,7 @@ from functools import reduce
 import sys
 import glob
 
-# spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
+spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
 
 # archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
  
