@@ -56,7 +56,7 @@ if __name__ == "__main__":
 def total_productos(df):
 
     sumar_productos = df.groupBy("Nombre").sum("Cantidad")
-    df_sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad_Total'))
+    df_sumar_productos = sumar_productos.select(col("Nombre"),col('sum(Cantidad)').alias('Cantidad_Total')).orderBy("Nombre")
 
     df_sumar_productos_csv = df_sumar_productos.repartition(1).write.csv("total_productos",header=True, mode="overwrite")
 
