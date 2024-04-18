@@ -1,6 +1,5 @@
 from .Tarea_2 import  total_productos, total_cajas, calcular_metricas
 
-archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
 
 def test_total_productos(spark_session):
 
@@ -9,7 +8,7 @@ def test_total_productos(spark_session):
 
     actual_ds = total_productos(cajas_ds)
 
-    expected_ds = spark_session.createDataFrame([('A',5),('B',5),('D',7),('C',10),('E',6)],\
+    expected_ds = spark_session.createDataFrame([('A',5),('B',5),('C',10),('D',7),('E',6)],\
                                                  ['Nombre','Cantidad_Total'])
     actual_ds.show()
     expected_ds.show()
