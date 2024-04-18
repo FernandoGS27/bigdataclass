@@ -10,22 +10,22 @@ import glob
 
 # archivos = ["compras_1.json","compras_2.json","compras_3.json","compras_4.json","compras_5.json"]
  
-#if __name__ == "__main__":
+if __name__ == "__main__":
    
-if len(sys.argv) < 2:
+    if len(sys.argv) < 2:
         print("Ingrese al menos un archivo json: spark-submit Tarea_2.py <json_files>")
         sys.exit(1)
-else:    
+    else:    
         spark = SparkSession.builder.appName("Tarea_2").getOrCreate()
         print(sys.argv)
 
-archivos = []
-for pattern in sys.argv[1:]:
-    archivos.extend(glob.glob(pattern))
-  
-dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
-compras_jsons = reduce(DataFrame.union,dfs)
-compras_jsons.show()
+    archivos = []
+    for pattern in sys.argv[1:]:
+        archivos.extend(glob.glob(pattern))
+    
+    dfs = [spark.read.option("multiline","true").json(archivo_json) for archivo_json in archivos]
+    compras_jsons = reduce(DataFrame.union,dfs)
+    compras_jsons.show()
 
 def compras_jsons_a_dataframes(files):
 
