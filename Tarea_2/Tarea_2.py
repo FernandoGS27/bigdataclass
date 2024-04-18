@@ -70,7 +70,7 @@ if __name__ == "__main__":
 def total_cajas(df):
 
     sumar_total_cajas = df.groupBy("numero_caja").sum("Precio_Unitario")
-    df_sumar_total_cajas = sumar_total_cajas.select(col("numero_caja"),col('sum(Precio_Unitario)').alias('Total_Vendido'))
+    df_sumar_total_cajas = sumar_total_cajas.select(col("numero_caja"),col('sum(Precio_Unitario)').alias('Total_Vendido')).orderBy("numero_caja")
 
     df_sumar_total_cajas_csv = df_sumar_total_cajas.repartition(1).write.csv("total_cajas",header=True, mode="overwrite")
 
