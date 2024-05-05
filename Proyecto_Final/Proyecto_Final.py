@@ -10,6 +10,6 @@ construccion_df.show()
 
 ##Dato que el proyecto se enfoca en construcciones residenciales. Se quitan del dataset todas las construcciones no residenciales
 
-construccion_residencial_df = construccion_df.filter(construccion_df==1)
+construccion_residencial_df = construccion_df.filter(construccion_df.claobr==1)
 
 construccion_residencial_df.summary().show()
