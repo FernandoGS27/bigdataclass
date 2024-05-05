@@ -4,7 +4,7 @@ spark = SparkSession.builder \
     .appName("Proyecto Final") \
     .getOrCreate()
 
-construccion_df = spark.read.csv("Base_Anonimizada2022",header=True,inferSchema=True)
+construccion_df = spark.read.csv("Base_Anonimizada2022.csv",header=True,inferSchema=True)
 
 construccion_df.show()
 
