@@ -12,4 +12,10 @@ construccion_df.show()
 
 construccion_residencial_df = construccion_df.filter(construccion_df.claobr==1)
 
+
+
+## Se seleccionan las variables de interes
+
+construccion_residencial_df = construccion_residencial_df.select("pro_num_prov","pc_num_cant","claper","claobr","num_obras","arecon","numviv","numapo","numdor","valobr")
+
 construccion_residencial_df.summary().show()
