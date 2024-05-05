@@ -1,3 +1,9 @@
-pip install pyspark pyreadstat
 from pyspark.sql import SparkSession
-import pyreadstat
+
+spark = SparkSession.builder \
+    .appName("Proyecto_Final") \
+    .getOrCreate()
+
+df_construccion = spark.read.csv('Base_Anonimizada2022.csv',header=True,inferSchema=True)
+
+df_construccion.show()
