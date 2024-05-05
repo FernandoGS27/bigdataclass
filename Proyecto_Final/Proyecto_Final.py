@@ -8,4 +8,8 @@ construccion_df = spark.read.csv("Base_Anonimizada2022.csv",header=True,inferSch
 
 construccion_df.show()
 
-##Comment
+##Dato que el proyecto se enfoca en construcciones residenciales. Se quitan del dataset todas las construcciones no residenciales
+
+construccion_residencial_df = construccion_df.filter(construccion_df==1)
+
+construccion_residencial_df.summary().show()
