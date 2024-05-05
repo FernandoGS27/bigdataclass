@@ -21,7 +21,7 @@ construccion_residencial_df = construccion_residencial_df.select("pro_num_prov",
 
 construccion_residencial_df.summary().show()
 
-construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_num_pro","pc_num_cant").agg(avg("num_obras").alias("pro_num_obras"),avg("arecon").alias("prom_arecon"),
+construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_num_prov","pc_num_cant").agg(avg("num_obras").alias("pro_num_obras"),avg("arecon").alias("prom_arecon"),
                                                                                                             avg("numviv").alias("prom_numviv"),avg("numapo").alias("prom_numapo"),
                                                                                                             avg("numdor").alias("prom_numdor"),avg("valobr").alias("prom_valobr"))
 
