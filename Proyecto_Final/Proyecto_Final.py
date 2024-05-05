@@ -16,6 +16,12 @@ construccion_residencial_df = construccion_df.filter(construccion_df.claobr==1)
 
 ## Se seleccionan las variables de interes
 
-construccion_residencial_df = construccion_residencial_df.select("pro_num_prov","pc_num_cant","claper","claobr","num_obras","arecon","numviv","numapo","numdor","valobr")
+construccion_residencial_df = construccion_residencial_df.select("pro_num_prov","pc_num_cant","num_obras","arecon","numviv","numapo","numdor","valobr")
 
 construccion_residencial_df.summary().show()
+
+construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_num_pro","pc_num_cant").agg(avg("num_obras").alias("pro_num_obras"),avg("arecon").alias("prom_arecon"),
+                                                                                                            avg("numviv").alias("prom_numviv"),avg("numapo").alias("prom_numapo"),
+                                                                                                            avg("numdor").alias("prom_numdor"),avg("valobr").alias("prom_valobr"))
+
+construccion_residencial_agrupada_df.show()
