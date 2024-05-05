@@ -1,2 +1,9 @@
 from pyspark.sql import SparkSession
-import pyreadstat
+
+spark = SparkSession.builder \
+    .appName("Proyecto Final") \
+    .getOrCreate()
+
+construccion_df = spark.read.csv("Base_Anonimizada2022",header=True,inferSchema=True)
+
+construccion_df.show()
