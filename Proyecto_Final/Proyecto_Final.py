@@ -36,7 +36,7 @@ enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA
 
 enaho_2022_variables_df.show()
 
-enaho_2022_variables_binario_df = enaho_2022_variables_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A.isin([1,2]),1).otherwise(0)).drop("V2A","ID_HOGAR","LINEA")
+enaho_2022_variables_binario_df = enaho_2022_variables_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A.isin([1,2]),1).otherwise(0)).drop("V2A","ID_HOGAR")
 
 
 
@@ -46,7 +46,7 @@ Para esto se crea un identificador a nivel de cada hogar y se grupan las variabl
 
 windowSpec = Window.orderBy(F.monotonically_increasing_id()).rowsBetween(Window.unboundedPreceding, 0)
 
-enaho_2022_variables_binario_df= enaho_2022_variables_binario_df.withColumn("id", F.sum(F.when(F.col("LINEA") == 1, 1).otherwise(0)).over(windowSpec))
+enaho_2022_variables_binario_df= enaho_2022_variables_binario_df.withColumn("id", F.sum(F.when(F.col("LINEA") == 1, 1).otherwise(0)).over(windowSpec)).drop("LINEA")
 
 enaho_2022_variables_binario_df.show(40)
 
