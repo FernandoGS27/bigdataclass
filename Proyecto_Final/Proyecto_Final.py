@@ -30,12 +30,22 @@ construccion_residencial_agrupada_df.show()
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
 
-enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","ID_VIVIENDA","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J","V18F1","V2A")
+enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J","V18F1","V2A")
+
+"La variable 'Tenencia de Viviennda' contiene 5 categorias. Para efectos de este trabajo se agrupan en solo 2. Casa Propia (1) Casa que no es propia (0)"
+
+enaho_2022_variables_df = enaho_2022_variables_df.withcolumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A==1,2,1).otherwise(0))
 
 enaho_2022_variables_df.show()
+
+
+'''Los datos de ENAHO vienen a nivel de hogar y nivel individual. Para el siguiente trabajo nos interesa utilizar las variables a nivel de hogar y agrupar aquellas que vienen a nivel individual.
+Para esto se crea un identificador a nivel de cada hogar y se grupan las variables a nivel individual'''
 
 windowSpec = Window.orderBy(F.monotonically_increasing_id()).rowsBetween(Window.unboundedPreceding, 0)
 
 enaho_2022_variables_df= enaho_2022_variables_df.withColumn("id", F.sum(F.when(F.col("LINEA") == 1, 1).otherwise(0)).over(windowSpec))
 
 enaho_2022_variables_df.show(40)
+
+enaho_2022_hogar_agr_df = enaho_2022_variables_df.groupby('id',"")
