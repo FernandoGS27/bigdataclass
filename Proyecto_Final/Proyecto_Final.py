@@ -50,6 +50,6 @@ enaho_2022_variables_binario_df= enaho_2022_variables_binario_df.withColumn("id"
 
 enaho_2022_variables_binario_df.show(40)
 
-enaho_2022_hogar_agr_df = enaho_2022_variables_binario_df.show(40).groupby("id","REGION","Tenencia_Vivienda","TamViv","V18J","V18F1","ZONA").agg(F.sum("Escolari").alias("suma_escolari_hogar"),
+enaho_2022_hogar_agr_df = enaho_2022_variables_binario_df.groupby("id","REGION","Tenencia_Vivienda","TamViv","V18J","V18F1","ZONA").agg(F.sum("Escolari").alias("suma_escolari_hogar"),
                                                                                                                                 F.sum("C2A4").alias("suma_horas_trab_hogar"))
 enaho_2022_hogar_agr_df.show()
