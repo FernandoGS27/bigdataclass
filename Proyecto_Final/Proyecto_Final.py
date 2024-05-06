@@ -34,7 +34,7 @@ enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA
 
 "La variable 'Tenencia de Viviennda' contiene 5 categorias. Para efectos de este trabajo se agrupan en solo 2. Casa Propia (1) Casa que no es propia (0)"
 
-enaho_2022_variables_binario_df = enaho_2022_variables_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A==(1,2),1).otherwise(0))
+enaho_2022_variables_binario_df = enaho_2022_variables_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A==[1,2],1).otherwise(0))
 
 enaho_2022_variables_binario_df.show()
 
