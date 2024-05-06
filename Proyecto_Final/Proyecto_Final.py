@@ -34,9 +34,11 @@ enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA
 
 "La variable 'Tenencia de Viviennda' contiene 5 categorias. Para efectos de este trabajo se agrupan en solo 2. Casa Propia (1) Casa que no es propia (0)"
 
-enaho_2022_variables_binario_df = enaho_2022_variables_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A.isin([1,2]),1).otherwise(0))
+enaho_2022_variables_df.show()
 
-enaho_2022_variables_binario_df.show()
+enaho_2022_variables_binario_df = enaho_2022_variables_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A.isin([1,2]),1).otherwise(0)).drop("V2A","ID_HOGAR","LINEA")
+
+
 
 
 '''Los datos de ENAHO vienen a nivel de hogar y nivel individual. Para el siguiente trabajo nos interesa utilizar las variables a nivel de hogar y agrupar aquellas que vienen a nivel individual.
@@ -48,4 +50,6 @@ enaho_2022_variables_binario_df= enaho_2022_variables_binario_df.withColumn("id"
 
 enaho_2022_variables_binario_df.show(40)
 
-#enaho_2022_hogar_agr_df = enaho_2022_variables_df.groupby('id',"")
+enaho_2022_hogar_agr_df = enaho_2022_variables_df.groupby('id',"REGION","Tenencia_Vivienda","TamViv","V18J","V18F1","ZONA").agg(F.sum("Escolari").alias("suma_escolari_hogar"),
+                                                                                                                                F.sum("C2A4").alias("suma_horas_trab_hogar"))
+enaho_2022_hogar_agr_df.show()
