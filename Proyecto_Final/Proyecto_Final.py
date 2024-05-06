@@ -50,12 +50,13 @@ enaho_2022_variables_binario_df= enaho_2022_variables_binario_df.withColumn("id"
 
 enaho_2022_variables_binario_df.show(40)
 
-enaho_2022_hogar_agr_df = enaho_2022_variables_binario_df.groupby("id","REGION","ithb","Tenencia_Vivienda","TamViv","V18J1","V18F1","ZONA").agg(F.sum("Escolari").alias("suma_escolari_hogar"),
-                                                                                                                                F.sum("C2A4").alias("suma_horas_trab_hogar")) \
+enaho_2022_hogar_agr_df = enaho_2022_variables_binario_df.groupby("id","REGION","Tenencia_Vivienda","TamViv","V18J1","V18F1","ZONA").agg(F.sum("Escolari").alias("suma_escolari_hogar"),
+                                                                                                                                F.sum("C2A4").alias("suma_horas_trab_hogar"),
+                                                                                                                                F.max("ithb").alias("Ingreso_Total_Bruto_Hogar")) \
                                                                                                                                 .orderBy(F.col("id").asc())
 enaho_2022_hogar_agr_df.show(40)
 
-enaho_2022_hogar_renombrado_df = enaho_2022_hogar_agr_df.withColumnRenamed("ithb","Ingreso_Total_Bruto_Hogar").withColumnRenamed("TamViv","Cantidad_Personas") \
+enaho_2022_hogar_renombrado_df = enaho_2022_hogar_agr_df.withColumnRenamed("TamViv","Cantidad_Personas") \
                                                         .withColumnRenamed("V18J1","Cantidad_vehiculos").withColumnRenamed("V18F1","Cantidad_Computadoras")
 enaho_2022_hogar_renombrado_df.show()
 
