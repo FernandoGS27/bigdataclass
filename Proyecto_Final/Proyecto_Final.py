@@ -32,10 +32,13 @@ construccion_residencial_agrupada_df.show()
 
 cantones_df =spark.read.csv("SEN_GEOGRAFICO_1.csv",header=True,inferSchema=True)
 
-cantones_df.show()
-
 cantones_codigo_df = cantones_df.withColumn("Codigo_DTA",F.split(cantones_df["CodigoDTA"],",")[0])\
                                 .withColumn("Canton",F.split(cantones_df["CodigoDTA"],",")[1]).drop("CodigoDTA","Nombre")
+
+cantones_codigo_df.show()
+
+for column in cantones_codigo_df.columns:
+    cantones_codigo_df = cantones_codigo_df.withColumn(column,F.regexp_replace(column,'"',''))
 
 cantones_codigo_df.show()
 
