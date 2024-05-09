@@ -28,6 +28,17 @@ construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_
 
 construccion_residencial_agrupada_df.show()
 
+##Se carga la base de atos que mapea los cantones con su respectivo codigodigo
+
+cantones_df =spark.read.csv("SEN_GEOGRAFICO_1.csv",header=True,inferSchema=True)
+
+cantones_df.show()
+
+
+
+
+
+
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
 
 enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J1","V18F1","V2A")
