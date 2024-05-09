@@ -28,19 +28,23 @@ construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_
 
 construccion_residencial_agrupada_df.show()
 
-##Se carga la base de atos que mapea los cantones con su respectivo codigodigo
+##Se carga la base de datos que mapea los cantones con su respectivo codigo y se limpia
 
 cantones_df =spark.read.csv("SEN_GEOGRAFICO_1.csv",header=True,inferSchema=True)
 
 cantones_codigo_df = cantones_df.withColumn("Codigo_DTA",F.split(cantones_df["CodigoDTA"],",")[0])\
                                 .withColumn("Canton",F.split(cantones_df["CodigoDTA"],",")[1]).drop("CodigoDTA","Nombre")
 
-cantones_codigo_df.show()
-
 for column in cantones_codigo_df.columns:
     cantones_codigo_df = cantones_codigo_df.withColumn(column,F.regexp_replace(column,'"',''))
 
 cantones_codigo_df.show()
+
+##Se carga la base de datos que mapea cada canton con la region
+
+regiones_df = spark.read.csv("division_territorial_por_region.csv",header=True,inferSchema=True)
+regiones_df.show()
+
 
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
