@@ -61,7 +61,14 @@ construccion_cantones_df.show()
 
 construccion_regiones_df=construccion_cantones_df.join(regiones_limpio_df,on="Codigo_DTA",how="left").drop("Canton","CANTON","Codigo_DTA")
 
+
 construccion_regiones_df.show()
+
+columnas_promedio = [col for col in construccion_regiones_df.columns if col!="REGION"]
+
+construccion_regiones_agrupada_df = construccion_regiones_df.groupby("REGION").agg(*(F.avg(col).alias("avg_"+col) for col in columnas_promedio))
+
+construccion_regiones_agrupada_df.show()
 
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
