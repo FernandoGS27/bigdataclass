@@ -60,75 +60,9 @@ def construcciones_region_df_func(constru_df,canton_df,region_df):
 
     return construccion_regiones_agrupada_df
 
-    
 
 
 
-construccion_residencial_df = construccion_df.filter(construccion_df.claobr==1)
-
-
-
-## Se seleccionan las variables de interes
-
-construccion_residencial_df = construccion_residencial_df.select("pro_num_prov","pc_num_cant","num_obras","arecon","numviv","numapo","numdor","valobr")
-
-construccion_residencial_df.summary().show()
-
-construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_num_prov","pc_num_cant").agg(F.avg("num_obras").alias("pro_num_obras"),F.avg("arecon").alias("prom_arecon"),
-                                                                                                            F.avg("numviv").alias("prom_numviv"),F.avg("numapo").alias("prom_numapo"),
-                                                                                                            F.avg("numdor").alias("prom_numdor"),F.avg("valobr").alias("prom_valobr"))
-
-construccion_residencial_agrupada_df.show()
-
-
-
-cantones_codigo_df = cantones_df.withColumn("Codigo_DTA",F.split(cantones_df["CodigoDTA"],",")[0])\
-                                .withColumn("Canton",F.split(cantones_df["CodigoDTA"],",")[1]).drop("CodigoDTA","Nombre")
-
-for column in cantones_codigo_df.columns:
-    cantones_codigo_df = cantones_codigo_df.withColumn(column,F.regexp_replace(column,'"',''))
-
-cantones_codigo_df.show()
-
-
-
-regiones_limpio_df = regiones_df.withColumn("Codigo_DTA",F.substring("CODIGO",1,3)).select("Codigo_DTA","CANTON","REGION").distinct()
-
-regiones_limpio_df.show()
-
-
-##Se une los datos de contruccion con los datos de cantones
-
-construccion_cantones_df=construccion_residencial_agrupada_df.join(cantones_codigo_df,construccion_residencial_agrupada_df["pc_num_cant"]==cantones_codigo_df["Codigo_DTA"],
-                                                                   how="inner").drop("pc_num_cant","pro_num_prov")
-
-construccion_cantones_df.show()
-
-##Se une los datos de construccion y cantones con los datos de region
-
-construccion_regiones_df=construccion_cantones_df.join(regiones_limpio_df,on="Codigo_DTA",how="left").drop("Canton","CANTON","Codigo_DTA")
-
-
-construccion_regiones_df.show()
-
-#Se agrupa por Region
-columnas_promedio = [col for col in construccion_regiones_df.columns if col!="REGION"]
-
-#Se crea la variable que contiene el codigo de cada region
-construccion_regiones_agrupada_df = construccion_regiones_df.groupby("REGION").agg(*(F.avg(col).alias("reg_"+col) for col in columnas_promedio))
-
-construccion_regiones_agrupada_df.show()
-
-construccion_regiones_agrupada_df=construccion_regiones_agrupada_df.withColumn("Codigo_Region",
-    F.when(construccion_regiones_agrupada_df["REGION"]=="CENTRAL", 1)
-    .when(construccion_regiones_agrupada_df["REGION"]=="CHOROTEGA", 2)
-    .when(construccion_regiones_agrupada_df["REGION"]=="PACIFICO CENTRAL", 3)
-    .when(construccion_regiones_agrupada_df["REGION"]=="BRUNCA", 4)
-    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR CARIBE", 5)
-    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR NORTE", 6)
-)
-
-construccion_regiones_agrupada_df.show()
 
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
