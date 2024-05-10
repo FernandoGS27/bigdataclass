@@ -22,6 +22,10 @@ cantones_df =spark.read.csv("SEN_GEOGRAFICO_1.csv",header=True,inferSchema=True)
 
 regiones_df = spark.read.csv("division_territorial_por_region.csv",header=True,inferSchema=True)
 
+##Se carga la base de datos de ENAHO
+
+enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
+
 
 ##Dato que el proyecto se enfoca en construcciones residenciales. Se quitan del dataset todas las construcciones no residenciales
 
@@ -62,10 +66,33 @@ def construcciones_region_df_func(constru_df,canton_df,region_df):
 
 
 
+construccion_prom_region_2022 = construcciones_region_df_func(construccion_df,cantones_df,regiones_df)
+
+construccion_prom_region_2022.show()
+
+def enaho_func(enaho_df):
+
+    enaho_2022_variables_df = enaho_df.select("ID_HOGAR","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J1","V18F1","V2A")
+
+    enaho_2022_variables_binario_df = enaho_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A.isin([1,2]),1).otherwise(0)).drop("V2A","ID_HOGAR")
+
+    windowSpec = Window.orderBy(F.monotonically_increasing_id()).rowsBetween(Window.unboundedPreceding, 0)
+
+    enaho_2022_variables_binario_df= enaho_2022_variables_binario_df.withColumn("id", F.sum(F.when(F.col("LINEA") == 1, 1).otherwise(0)).over(windowSpec)).drop("LINEA")
+
+    enaho_2022_variables_binario_df.show(40)
+
+    enaho_2022_hogar_agr_df = enaho_2022_variables_binario_df.groupby("id","REGION","Tenencia_Vivienda","TamViv","V18J1","V18F1","ZONA").agg(F.sum("Escolari").alias("suma_escolari_hogar"),
+                                                                                                                                F.sum("C2A4").alias("suma_horas_trab_hogar"),
+                                                                                                                                F.max("ithb").alias("Ingreso_Total_Bruto_Hogar")) \
+                                                                                                                                .orderBy(F.col("id").asc())
+    
+    enaho_2022_hogar_renombrado_df = enaho_2022_hogar_agr_df.withColumnRenamed("TamViv","Cantidad_Personas") \
+                                                        .withColumnRenamed("V18J1","Cantidad_vehiculos").withColumnRenamed("V18F1","Cantidad_Computadoras")\
+                                                        .withColumnRenamed("REGION","Region_Geo")
+    return enaho_2022_hogar_renombrado_df
 
 
-
-enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
 
 enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J1","V18F1","V2A")
 
@@ -115,7 +142,7 @@ enaho_2022_hogar_renombrado_df.show()
 #     .option("dbtable", "Proyecto_Final_1") \
 #     .save()
 
-
-test = construcciones_region_df_func(construccion_df,cantones_df,regiones_df)
+test = enaho_func(enaho_2022_df)
 
 test.show()
+
