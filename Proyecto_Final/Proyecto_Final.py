@@ -14,9 +14,53 @@ spark = SparkSession \
 
 construccion_df = spark.read.csv("Base_Anonimizada2022.csv",header=True,inferSchema=True)
 
-construccion_df.show()
+##Se carga la base de datos que mapea los cantones con su respectivo codigo y se limpia
+
+cantones_df =spark.read.csv("SEN_GEOGRAFICO_1.csv",header=True,inferSchema=True)
+
+##Se carga la base de datos que mapea cada canton con la region
+
+regiones_df = spark.read.csv("division_territorial_por_region.csv",header=True,inferSchema=True)
+
 
 ##Dato que el proyecto se enfoca en construcciones residenciales. Se quitan del dataset todas las construcciones no residenciales
+
+def construcciones_region_df_func(constru_df,canton_df,region_df):
+
+    construccion_residencial_df = constru_df.filter(constru_df.claobr==1)
+    construccion_residencial_df = construccion_residencial_df.select("pro_num_prov","pc_num_cant","num_obras","arecon","numviv","numapo","numdor","valobr")
+    construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_num_prov","pc_num_cant").agg(F.avg("num_obras").alias("pro_num_obras"),F.avg("arecon").alias("prom_arecon"),
+                                                                                                            F.avg("numviv").alias("prom_numviv"),F.avg("numapo").alias("prom_numapo"),
+                                                                                                            F.avg("numdor").alias("prom_numdor"),F.avg("valobr").alias("prom_valobr"))
+    
+    cantones_codigo_df = canton_df.withColumn("Codigo_DTA",F.split(canton_df["CodigoDTA"],",")[0])\
+                                .withColumn("Canton",F.split(canton_df["CodigoDTA"],",")[1]).drop("CodigoDTA","Nombre")
+    
+    for column in cantones_codigo_df.columns:
+        cantones_codigo_df = cantones_codigo_df.withColumn(column,F.regexp_replace(column,'"',''))
+
+    regiones_limpio_df = region_df.withColumn("Codigo_DTA",F.substring("CODIGO",1,3)).select("Codigo_DTA","CANTON","REGION").distinct()
+
+    construccion_cantones_df=construccion_residencial_agrupada_df.join(cantones_codigo_df,construccion_residencial_agrupada_df["pc_num_cant"]==cantones_codigo_df["Codigo_DTA"],
+                                                                   how="inner").drop("pc_num_cant","pro_num_prov")
+    
+    construccion_regiones_df=construccion_cantones_df.join(regiones_limpio_df,on="Codigo_DTA",how="left").drop("Canton","CANTON","Codigo_DTA")
+
+    columnas_promedio = [col for col in construccion_regiones_df.columns if col!="REGION"]
+
+    construccion_regiones_agrupada_df=construccion_regiones_agrupada_df.withColumn("Codigo_Region",
+    F.when(construccion_regiones_agrupada_df["REGION"]=="CENTRAL", 1)
+    .when(construccion_regiones_agrupada_df["REGION"]=="CHOROTEGA", 2)
+    .when(construccion_regiones_agrupada_df["REGION"]=="PACIFICO CENTRAL", 3)
+    .when(construccion_regiones_agrupada_df["REGION"]=="BRUNCA", 4)
+    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR CARIBE", 5)
+    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR NORTE", 6))
+
+    return construccion_regiones_agrupada_df
+
+    
+
+
 
 construccion_residencial_df = construccion_df.filter(construccion_df.claobr==1)
 
@@ -34,9 +78,7 @@ construccion_residencial_agrupada_df = construccion_residencial_df.groupby("pro_
 
 construccion_residencial_agrupada_df.show()
 
-##Se carga la base de datos que mapea los cantones con su respectivo codigo y se limpia
 
-cantones_df =spark.read.csv("SEN_GEOGRAFICO_1.csv",header=True,inferSchema=True)
 
 cantones_codigo_df = cantones_df.withColumn("Codigo_DTA",F.split(cantones_df["CodigoDTA"],",")[0])\
                                 .withColumn("Canton",F.split(cantones_df["CodigoDTA"],",")[1]).drop("CodigoDTA","Nombre")
@@ -46,10 +88,7 @@ for column in cantones_codigo_df.columns:
 
 cantones_codigo_df.show()
 
-##Se carga la base de datos que mapea cada canton con la region
 
-regiones_df = spark.read.csv("division_territorial_por_region.csv",header=True,inferSchema=True)
-regiones_df.show()
 
 regiones_limpio_df = regiones_df.withColumn("Codigo_DTA",F.substring("CODIGO",1,3)).select("Codigo_DTA","CANTON","REGION").distinct()
 
@@ -130,14 +169,17 @@ tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones
 
 tenencia_vivienda_df.show()
 
-tenencia_vivienda_df\
-    .write \
-    .format("jdbc") \
-    .mode('overwrite') \
-    .option("url", "jdbc:postgresql://host.docker.internal:5433/postgres") \
-    .option("user", "postgres") \
-    .option("password", "testPassword") \
-    .option("dbtable", "Proyecto_Final_1") \
-    .save()
+# tenencia_vivienda_df\
+#     .write \
+#     .format("jdbc") \
+#     .mode('overwrite') \
+#     .option("url", "jdbc:postgresql://host.docker.internal:5433/postgres") \
+#     .option("user", "postgres") \
+#     .option("password", "testPassword") \
+#     .option("dbtable", "Proyecto_Final_1") \
+#     .save()
 
 
+test = construcciones_region_df_func(construccion_df,cantones_df,regiones_df)
+
+test.show()
