@@ -48,6 +48,8 @@ def construcciones_region_df_func(constru_df,canton_df,region_df):
 
     columnas_promedio = [col for col in construccion_regiones_df.columns if col!="REGION"]
 
+    construccion_regiones_agrupada_df = construccion_regiones_df.groupby("REGION").agg(*(F.avg(col).alias("reg_"+col) for col in columnas_promedio))
+
     construccion_regiones_agrupada_df=construccion_regiones_agrupada_df.withColumn("Codigo_Region",
     F.when(construccion_regiones_agrupada_df["REGION"]=="CENTRAL", 1)
     .when(construccion_regiones_agrupada_df["REGION"]=="CHOROTEGA", 2)
