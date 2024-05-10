@@ -45,7 +45,7 @@ cantones_codigo_df.show()
 regiones_df = spark.read.csv("division_territorial_por_region.csv",header=True,inferSchema=True)
 regiones_df.show()
 
-regiones_limpio_df = regiones_df.withColumn("Codigo_DTA",F.substring("CODIGO",1,3)).select("Codigo_DTA","CANTON","REGION")
+regiones_limpio_df = regiones_df.withColumn("Codigo_DTA",F.substring("CODIGO",1,3)).select("Codigo_DTA","CANTON","REGION").distinct()
 
 regiones_limpio_df.show()
 
