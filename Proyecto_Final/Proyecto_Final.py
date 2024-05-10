@@ -77,7 +77,7 @@ construccion_regiones_agrupada_df=construccion_regiones_agrupada_df.withColumn("
     .when(construccion_regiones_agrupada_df["REGION"]=="CHOROTEGA", 2)
     .when(construccion_regiones_agrupada_df["REGION"]=="PACIFICO CENTRAL", 3)
     .when(construccion_regiones_agrupada_df["REGION"]=="BRUNCA", 4)
-    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR ATLANTICA", 5)
+    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR CARIBE", 5)
     .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR NORTE", 6)
 )
 
