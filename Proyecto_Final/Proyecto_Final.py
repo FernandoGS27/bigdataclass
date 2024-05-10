@@ -79,7 +79,7 @@ construccion_regiones_agrupada_df=construccion_regiones_agrupada_df.withColumn("
     .when(construccion_regiones_agrupada_df["REGION"]=="BRUNCA", 4)
     .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR CARIBE", 5)
     .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR NORTE", 6)
-)
+).withColumn("Region_Geo","REGION")
 
 construccion_regiones_agrupada_df.show()
 
