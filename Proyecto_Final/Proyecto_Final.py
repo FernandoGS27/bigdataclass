@@ -116,4 +116,11 @@ enaho_2022_hogar_renombrado_df = enaho_2022_hogar_agr_df.withColumnRenamed("TamV
                                                         .withColumnRenamed("V18J1","Cantidad_vehiculos").withColumnRenamed("V18F1","Cantidad_Computadoras")
 enaho_2022_hogar_renombrado_df.show()
 
+# Se unen los datos de la enaho con los datos constructivos agreegados correspondientes a cada region.
+
+tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones_agrupada_df,enaho_2022_hogar_renombrado_df["REGION"]==construccion_regiones_agrupada_df["Codigo_Region"],
+                                                           how='left')
+
+tenencia_vivienda_df.show()
+
 
