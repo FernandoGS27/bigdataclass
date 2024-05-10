@@ -114,15 +114,15 @@ tenencia_vivienda_df.show()
 
 # Se unen los datos de la enaho con los datos constructivos agreegados correspondientes a cada region.
 
-# tenencia_vivienda_df\
-#     .write \
-#     .format("jdbc") \
-#     .mode('overwrite') \
-#     .option("url", "jdbc:postgresql://host.docker.internal:5433/postgres") \
-#     .option("user", "postgres") \
-#     .option("password", "testPassword") \
-#     .option("dbtable", "Proyecto_Final_1") \
-#     .save()
+tenencia_vivienda_df\
+    .write \
+    .format("jdbc") \
+    .mode('overwrite') \
+    .option("url", "jdbc:postgresql://host.docker.internal:5433/postgres") \
+    .option("user", "postgres") \
+    .option("password", "testPassword") \
+    .option("dbtable", "Proyecto_Final") \
+    .save()
 
 
 
