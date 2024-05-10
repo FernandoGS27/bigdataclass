@@ -70,7 +70,7 @@ columnas_promedio = [col for col in construccion_regiones_df.columns if col!="RE
 #Se crea la variable que contiene el codigo de cada region
 construccion_regiones_agrupada_df = construccion_regiones_df.groupby("REGION").agg(*(F.avg(col).alias("reg_"+col) for col in columnas_promedio))\
                                                             .withColumn("Codigo_Region", F.when(construccion_regiones_df["REGION"]=="CENTRAL",1)\
-                                                                        .F.when(construccion_regiones_df["REGION"]=="CHOROTEGA",2)\
+                                                                        .F.otherwise(F.when(construccion_regiones_df["REGION"]=="CHOROTEGA",2))\
                                                                         .F.when(construccion_regiones_df["REGION"]=="PACIFICO CENTRAL",3)\
                                                                         .F.when(construccion_regiones_df["REGION"]=="BRUNCA",4)\
                                                                         .F.when(construccion_regiones_df["REGION"]=="HUETAR ATLANTICA",5)\
