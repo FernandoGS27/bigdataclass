@@ -100,10 +100,10 @@ enaho_2022_hogar_renombrado_df.show()
 
 # Se unen los datos de la enaho con los datos constructivos agreegados correspondientes a cada region.
 
-tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones_agrupada_df,enaho_2022_hogar_renombrado_df["Region_Geo"]==construccion_regiones_agrupada_df["Codigo_Region"],
-                                                           how='left')
+# tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones_agrupada_df,enaho_2022_hogar_renombrado_df["Region_Geo"]==construccion_regiones_agrupada_df["Codigo_Region"],
+#                                                            how='left')
 
-tenencia_vivienda_df.show()
+# tenencia_vivienda_df.show()
 
 # tenencia_vivienda_df\
 #     .write \
