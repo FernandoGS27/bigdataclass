@@ -59,7 +59,7 @@ construccion_cantones_df.show()
 
 ##Se une los datos de construccion y cantones con los datos de region
 
-construccion_regiones_df=construccion_cantones_df.join(regiones_limpio_df,on="Codigo_DTA",how="left")
+construccion_regiones_df=construccion_cantones_df.join(regiones_limpio_df,on="Codigo_DTA",how="left").drop("Canton","CANTON","Codigo_DTA")
 
 construccion_regiones_df.show()
 
