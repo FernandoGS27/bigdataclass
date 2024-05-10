@@ -68,13 +68,18 @@ construccion_regiones_df.show()
 columnas_promedio = [col for col in construccion_regiones_df.columns if col!="REGION"]
 
 #Se crea la variable que contiene el codigo de cada region
-construccion_regiones_agrupada_df = construccion_regiones_df.groupby("REGION").agg(*(F.avg(col).alias("reg_"+col) for col in columnas_promedio))\
-                                                            .withColumn("Codigo_Region", F.when(construccion_regiones_df["REGION"]=="CENTRAL",1)\
-                                                                        .F.otherwise(F.when(construccion_regiones_df["REGION"]=="CHOROTEGA",2))\
-                                                                        .F.when(construccion_regiones_df["REGION"]=="PACIFICO CENTRAL",3)\
-                                                                        .F.when(construccion_regiones_df["REGION"]=="BRUNCA",4)\
-                                                                        .F.when(construccion_regiones_df["REGION"]=="HUETAR ATLANTICA",5)\
-                                                                        .F.when(construccion_regiones_df["REGION"]=="HUETAR NORTE",6))
+construccion_regiones_agrupada_df = construccion_regiones_df.groupby("REGION").agg(*(F.avg(col).alias("reg_"+col) for col in columnas_promedio))
+
+construccion_regiones_agrupada_df.show()
+
+construccion_regiones_agrupada_df=construccion_regiones_agrupada_df.withColumn("Codigo_Region",
+    F.when(construccion_regiones_agrupada_df["REGION"]=="CENTRAL", 1)
+    .when(construccion_regiones_agrupada_df["REGION"]=="CHOROTEGA", 2)
+    .when(construccion_regiones_agrupada_df["REGION"]=="PACIFICO CENTRAL", 3)
+    .when(construccion_regiones_agrupada_df["REGION"]=="BRUNCA", 4)
+    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR ATLANTICA", 5)
+    .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR NORTE", 6)
+)
 
 construccion_regiones_agrupada_df.show()
 
