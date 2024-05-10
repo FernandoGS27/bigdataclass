@@ -114,7 +114,7 @@ enaho_2022_hogar_agr_df.show(40)
 
 enaho_2022_hogar_renombrado_df = enaho_2022_hogar_agr_df.withColumnRenamed("TamViv","Cantidad_Personas") \
                                                         .withColumnRenamed("V18J1","Cantidad_vehiculos").withColumnRenamed("V18F1","Cantidad_Computadoras")\
-                                                        .withColumnRename("REGION","Region_Geo")
+                                                        .withColumnRenamed("REGION","Region_Geo")
 enaho_2022_hogar_renombrado_df.show()
 
 # Se unen los datos de la enaho con los datos constructivos agreegados correspondientes a cada region.
