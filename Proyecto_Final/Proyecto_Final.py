@@ -1,9 +1,15 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+import findspark
 
-spark = SparkSession.builder \
-    .appName("Proyecto Final") \
+findspark.init('/usr/lib/python3.7/site-packages/pyspark')
+
+spark = SparkSession \
+    .builder \
+    .appName("Basic JDBC pipeline") \
+    .config("spark.driver.extraClassPath", "postgresql-42.2.14.jar") \
+    .config("spark.executor.extraClassPath", "postgresql-42.2.14.jar") \
     .getOrCreate()
 
 construccion_df = spark.read.csv("Base_Anonimizada2022.csv",header=True,inferSchema=True)
