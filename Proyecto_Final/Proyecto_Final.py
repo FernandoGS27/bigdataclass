@@ -51,7 +51,7 @@ regiones_df.show()
 construccion_cantones_df=construccion_residencial_agrupada_df.join(cantones_codigo_df,construccion_residencial_agrupada_df["pc_num_cant"]==cantones_codigo_df["Codigo_DTA"],
                                                                    how="inner")
 
-cantones_codigo_df.show()
+construccion_cantones_df.show()
 
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
