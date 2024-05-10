@@ -79,14 +79,14 @@ construccion_regiones_agrupada_df=construccion_regiones_agrupada_df.withColumn("
     .when(construccion_regiones_agrupada_df["REGION"]=="BRUNCA", 4)
     .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR CARIBE", 5)
     .when(construccion_regiones_agrupada_df["REGION"]=="HUETAR NORTE", 6)
-).withColumn("Region_Geo","REGION")
+)
 
 construccion_regiones_agrupada_df.show()
 
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
 
-enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J1","V18F1","V2A")
+enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA",F.col("REGION").alias("Region_Geo"),"ZONA","ithb","Escolari","C2A4","TamViv","V18J1","V18F1","V2A")
 
 "La variable 'Tenencia de Viviennda' contiene 5 categorias. Para efectos de este trabajo se agrupan en solo 2. Casa Propia (1) Casa que no es propia (0)"
 
@@ -118,7 +118,7 @@ enaho_2022_hogar_renombrado_df.show()
 
 # Se unen los datos de la enaho con los datos constructivos agreegados correspondientes a cada region.
 
-tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones_agrupada_df,enaho_2022_hogar_renombrado_df["REGION"]==construccion_regiones_agrupada_df["Codigo_Region"],
+tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones_agrupada_df,enaho_2022_hogar_renombrado_df["Region_Geo"]==construccion_regiones_agrupada_df["Codigo_Region"],
                                                            how='left')
 
 tenencia_vivienda_df.select("REGION","Codigo_Region").show()
