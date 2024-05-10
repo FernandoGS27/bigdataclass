@@ -124,4 +124,14 @@ tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones
 
 tenencia_vivienda_df.show()
 
+tenencia_vivienda_df\
+    .write \
+    .format("jdbc") \
+    .mode('overwrite') \
+    .option("url", "jdbc:postgresql://host.docker.internal:5433/postgres") \
+    .option("user", "postgres") \
+    .option("password", "testPassword") \
+    .option("dbtable", "Proyecto_Final") \
+    .save()
+
 
