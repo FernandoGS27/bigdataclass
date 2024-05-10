@@ -46,6 +46,13 @@ regiones_df = spark.read.csv("division_territorial_por_region.csv",header=True,i
 regiones_df.show()
 
 
+##Se une los datos de contruccion con los datos de cantones
+
+construccion_cantones_df=construccion_residencial_agrupada_df.join(cantones_codigo_df,construccion_residencial_agrupada_df["pc_num_cant"]==cantones_codigo_df["Codigo_DTA"],
+                                                                   how="inner")
+
+cantones_codigo_df.show()
+
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
 
