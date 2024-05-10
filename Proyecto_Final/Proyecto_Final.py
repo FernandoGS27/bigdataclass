@@ -55,9 +55,13 @@ regiones_limpio_df.show()
 construccion_cantones_df=construccion_residencial_agrupada_df.join(cantones_codigo_df,construccion_residencial_agrupada_df["pc_num_cant"]==cantones_codigo_df["Codigo_DTA"],
                                                                    how="inner").drop("pc_num_cant","pro_num_prov")
 
+construccion_cantones_df.show()
+
 ##Se une los datos de construccion y cantones con los datos de region
 
-construccion_cantones_df.show()
+construccion_regiones_df=construccion_cantones_df.join(regiones_limpio_df,on="Codigo_DTA",how="left")
+
+construccion_regiones_df.show()
 
 
 enaho_2022_df = spark.read.csv("BdBasePublica.csv",header=True,inferSchema=True)
