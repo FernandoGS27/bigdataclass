@@ -137,7 +137,7 @@ tenencia_vivienda_df\
     .option("url", "jdbc:postgresql://host.docker.internal:5433/postgres") \
     .option("user", "postgres") \
     .option("password", "testPassword") \
-    .option("dbtable", "Proyecto_Final") \
+    .option("dbtable", "Proyecto_Final_1") \
     .save()
 
 
