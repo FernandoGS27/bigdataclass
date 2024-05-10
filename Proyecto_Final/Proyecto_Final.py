@@ -74,7 +74,11 @@ def enaho_func(enaho_df):
 
     enaho_2022_variables_df = enaho_df.select("ID_HOGAR","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J1","V18F1","V2A")
 
+    "La variable 'Tenencia de Viviennda' contiene 5 categorias. Para efectos de este trabajo se agrupan en solo 2. Casa Propia (1) Casa que no es propia (0)"
     enaho_2022_variables_binario_df = enaho_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A.isin([1,2]),1).otherwise(0)).drop("V2A","ID_HOGAR")
+
+    '''Los datos de ENAHO vienen a nivel de hogar y nivel individual. Para el siguiente trabajo nos interesa utilizar las variables a nivel de hogar y agrupar aquellas que vienen a nivel individual.
+    Para esto se crea un identificador a nivel de cada hogar y se grupan las variables a nivel individual'''
 
     windowSpec = Window.orderBy(F.monotonically_increasing_id()).rowsBetween(Window.unboundedPreceding, 0)
 
@@ -93,44 +97,22 @@ def enaho_func(enaho_df):
     return enaho_2022_hogar_renombrado_df
 
 
+enaho_2022 = enaho_func(enaho_2022_df)
 
-enaho_2022_variables_df = enaho_2022_df.select("ID_HOGAR","LINEA","REGION","ZONA","ithb","Escolari","C2A4","TamViv","V18J1","V18F1","V2A")
-
-"La variable 'Tenencia de Viviennda' contiene 5 categorias. Para efectos de este trabajo se agrupan en solo 2. Casa Propia (1) Casa que no es propia (0)"
-
-enaho_2022_variables_df.show()
-
-enaho_2022_variables_binario_df = enaho_2022_variables_df.withColumn("Tenencia_Vivienda", F.when(enaho_2022_variables_df.V2A.isin([1,2]),1).otherwise(0)).drop("V2A","ID_HOGAR")
+enaho_2022.show()
 
 
+def unir_datos(enaho_df,construccion_df):
 
+    tenencia_vivienda = enaho_df.join(construccion_df,enaho_df["Region_Geo"]==construccion_df["Codigo_Region"],how='left')
+                                                           
+    return tenencia_vivienda
 
-'''Los datos de ENAHO vienen a nivel de hogar y nivel individual. Para el siguiente trabajo nos interesa utilizar las variables a nivel de hogar y agrupar aquellas que vienen a nivel individual.
-Para esto se crea un identificador a nivel de cada hogar y se grupan las variables a nivel individual'''
+tenencia_vivienda_df = unir_datos(enaho_2022,construccion_prom_region_2022)
 
-windowSpec = Window.orderBy(F.monotonically_increasing_id()).rowsBetween(Window.unboundedPreceding, 0)
-
-enaho_2022_variables_binario_df= enaho_2022_variables_binario_df.withColumn("id", F.sum(F.when(F.col("LINEA") == 1, 1).otherwise(0)).over(windowSpec)).drop("LINEA")
-
-enaho_2022_variables_binario_df.show(40)
-
-enaho_2022_hogar_agr_df = enaho_2022_variables_binario_df.groupby("id","REGION","Tenencia_Vivienda","TamViv","V18J1","V18F1","ZONA").agg(F.sum("Escolari").alias("suma_escolari_hogar"),
-                                                                                                                                F.sum("C2A4").alias("suma_horas_trab_hogar"),
-                                                                                                                                F.max("ithb").alias("Ingreso_Total_Bruto_Hogar")) \
-                                                                                                                                .orderBy(F.col("id").asc())
-enaho_2022_hogar_agr_df.show(40)
-
-enaho_2022_hogar_renombrado_df = enaho_2022_hogar_agr_df.withColumnRenamed("TamViv","Cantidad_Personas") \
-                                                        .withColumnRenamed("V18J1","Cantidad_vehiculos").withColumnRenamed("V18F1","Cantidad_Computadoras")\
-                                                        .withColumnRenamed("REGION","Region_Geo")
-enaho_2022_hogar_renombrado_df.show()
+tenencia_vivienda_df.show()
 
 # Se unen los datos de la enaho con los datos constructivos agreegados correspondientes a cada region.
-
-# tenencia_vivienda_df = enaho_2022_hogar_renombrado_df.join(construccion_regiones_agrupada_df,enaho_2022_hogar_renombrado_df["Region_Geo"]==construccion_regiones_agrupada_df["Codigo_Region"],
-#                                                            how='left')
-
-# tenencia_vivienda_df.show()
 
 # tenencia_vivienda_df\
 #     .write \
@@ -142,7 +124,5 @@ enaho_2022_hogar_renombrado_df.show()
 #     .option("dbtable", "Proyecto_Final_1") \
 #     .save()
 
-test = enaho_func(enaho_2022_df)
 
-test.show()
 
